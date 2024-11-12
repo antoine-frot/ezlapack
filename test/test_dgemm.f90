@@ -1,58 +1,69 @@
-program test_dgemm_wrapper
-    use dgemm_module
+program toto
+
+  implicit none
+
+  external :: matrices_mult_d
+
+  integer          :: N
+  integer          :: i,p,q,r
+
+  double precision :: t_start
+  double precision :: t_end
+  integer :: size_mat(6)
+
+  double precision :: alpha
+  double precision :: beta
+
+  double precision,allocatable :: A(:,:)
+  double precision,allocatable :: B(:,:)
+  double precision,allocatable :: C(:,:)
+
+  size_mat = (/ 10, 100, 1000, 2000, 5000, 10000 /)
+
+  N = size_mat(i)
+
+  do i=1,N
+ 
+    allocate(A(N,N),B(N,N),C(N,N))
+ 
+    call random_number(A)
+    call random_number(B)
     
-    implicit none
+    alpha = 1d0
+    beta = 0d0
 
-    double precision, allocatable :: A(:,:), B(:,:), C(:,:)
-    double precision :: alpha, beta
-    integer :: m, n, k
+    ! matmul section
 
-    alpha = 1.0d0
-    beta = 0.0d0
+    call cpu_time(t_start)
+ 
+    C = matmul(A,B)
+ 
+    call cpu_time(t_end)
 
-    m = 3      ! Number of rows of C and A (if transa = 'N')
-    n = 3      ! Number of columns of C and B (if transb = 'N')
-    k = 3      ! Number of columns of A (if transa = 'N') or rows of B (if transb = 'N')
+    write(*,'(A30,E12.6,A10,I9)') 'CPU time for matmul ',t_end - t_start,' s for N = ',N
+ 
+    ! dgemm section
 
-    allocate(A(m, k), B(k, n), C(m, n))
+    call cpu_time(t_start)
+ 
+    call dgemm('N','N',N,N,N,alpha,A,N,B,N,beta,C,N)
+ 
+    call cpu_time(t_end)
 
-    A = reshape([ &
-        1.0d0, 2.0d0, 3.0d0, &
-        4.0d0, 5.0d0, 6.0d0, &
-        7.0d0, 8.0d0, 9.0d0], &
-        shape(A))
+    write(*,'(A30,E12.6,A10,I9)') 'CPU time for dgemm ',t_end - t_start,' s for N = ',N
+ 
+    ! wrapper section
+ 
+    call cpu_time(t_start)
+ 
+    call matrices_mult_d(alpha,'N',A,'N',B,beta,C)
 
-    B = reshape([ &
-        9.0d0, 8.0d0, 7.0d0, &
-        6.0d0, 5.0d0, 4.0d0, &
-        3.0d0, 2.0d0, 1.0d0], &
-        shape(B))
+    call cpu_time(t_end)
 
-    C = 0.0d0
+    write(*,'(A30,E12.6,A10,I9)') 'CPU time for wrapper ',t_end - t_start,' s for N = ',N
+ 
+    deallocate(A,B,C)
 
-    call matrices_mult_d(alpha, 'N', A, 'N', B, beta, C)
-
-    print *, 'Resulting Matrix C:'
-    call print_matrix(C)
-
-    deallocate(A, B, C)
-
-contains
-
-    subroutine print_matrix(mat)
-        double precision, intent(in) :: mat(:,:)
-        integer :: i, j
-
-        do i = 1, size(mat, 1)
-            do j = 1, size(mat, 2)
-                write(*, '(F6.2)', advance='no') mat(i, j)
-                if (j < size(mat, 2)) then
-                    write(*, '(A)', advance='no') '  '
-                end if
-            end do
-            print *
-        end do
-    end subroutine print_matrix
-
-end program test_dgemm_wrapper
-
+  end do
+ 
+end program
