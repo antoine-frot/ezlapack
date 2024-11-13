@@ -9,7 +9,7 @@ OBJ_FILES = $(BIN_DIR)/dgemm_wrapper.o $(BIN_DIR)/test_dgemm.o
 EXE = $(BIN_DIR)/test_dgemm
 
 FC = gfortran
-FCFLAGS = -O2 -g
+FCFLAGS = -O0 -g
 LIBS = -lblas -llapack
 
 all: $(EXE)

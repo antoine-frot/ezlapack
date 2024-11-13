@@ -1,15 +1,15 @@
-program toto
+program test_matrice_mult_d
 
   implicit none
 
-  external :: matrices_mult_d
+  external         :: matrices_mult_d
 
   integer          :: N
   integer          :: i,p,q,r
 
   double precision :: t_start
   double precision :: t_end
-  integer :: size_mat(6)
+  integer          :: size_mat(6)
 
   double precision :: alpha
   double precision :: beta
@@ -20,15 +20,17 @@ program toto
 
   size_mat = (/ 10, 100, 1000, 2000, 5000, 10000 /)
 
-  N = size_mat(i)
-
-  do i=1,N
+  do i=1,size(size_mat)
  
+    N = size_mat(i)
+
     allocate(A(N,N),B(N,N),C(N,N))
  
+    print *, A
     call random_number(A)
     call random_number(B)
-    
+    print *, A
+
     alpha = 1d0
     beta = 0d0
 
@@ -56,7 +58,7 @@ program toto
  
     call cpu_time(t_start)
  
-    call matrices_mult_d(alpha,'N',A,'N',B,beta,C)
+    call matrices_mult_d(alpha, 'N', A, 'N', B, beta, C)
 
     call cpu_time(t_end)
 
