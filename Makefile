@@ -14,20 +14,29 @@ LIBS = -lblas -llapack
 
 all: $(EXE)
 
+# Create bin directory if it doesn't exist
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+# Compile the dgemm wrapper to an object file
+$(BIN_DIR)/dgemm_wrapper.o: $(SRC_FILES) | $(BIN_DIR)
+	$(FC) $(FCFLAGS) -c $(SRC_FILES) -o $(BIN_DIR)/dgemm_wrapper.o
+
+# Compile the test program to an object file
+$(BIN_DIR)/test_dgemm.o: $(TEST_FILES) | $(BIN_DIR)
+	$(FC) $(FCFLAGS) -c $(TEST_FILES) -o $(BIN_DIR)/test_dgemm.o
+
+# Link the test program with the dgemm wrapper
 $(EXE): $(OBJ_FILES)
-	$(FC) $(OBJ_FILES) -o $(EXE) $(LIBS)
+	$(FC) $(FCFLAGS) $(OBJ_FILES) -o $(EXE) $(LIBS)
+	rm -f $(OBJ_FILES)
 
-$(BIN_DIR)/dgemm_wrapper.o: $(SRC_DIR)/dgemm_wrapper.f90
-	$(FC) $(FCFLAGS) -c $(SRC_DIR)/dgemm_wrapper.f90 -o $(BIN_DIR)/dgemm_wrapper.o
-
-$(BIN_DIR)/test_dgemm.o: $(TEST_DIR)/test_dgemm.f90
-	$(FC) $(FCFLAGS) -c $(TEST_DIR)/test_dgemm.f90 -o $(BIN_DIR)/test_dgemm.o
-
+# Clean up object files and executables
 clean:
 	rm -f $(OBJ_FILES) $(EXE)
 
 distclean: clean
-	rm -f $(BIN_DIR)/$(EXE)
+	rm -rf $(BIN_DIR)
 
 .PHONY: all clean distclean
 
