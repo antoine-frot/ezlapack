@@ -23,19 +23,30 @@ subroutine matrices_mult_d(alpha, transa, A, transb, B, beta, C)
   
   if (transa == 'N' .or. transa == 'n') then
     k = size(A, 2)
-    lda = m
+    lda = size(A,1)
   else
     k = size(A, 1)
-    lda = k
+    lda = size(A,2)
   end if
 
   if (transb == 'N' .or. transb == 'n') then
-    ldb = k
+    ldb = size(B,1)
   else
-    ldb = n
+    ldb = size(B,1)
   end if
 
   ldc = m
+
+  ! Debugging output to verify dimensions
+  print *, 'Dimensions:'
+  print *, 'm = ', m, ', n = ', n, ', k = ', k
+  print *, 'lda = ', lda, ', ldb = ', ldb, ', ldc = ', ldc
+
+  ! Ensure sizes are compatible before calling dgemm
+  if (size(A,1) /= lda .or. size(B,1) /= ldb .or. size(C,1) /= ldc) then
+    print *, 'Error: Mismatched dimensions'
+    stop
+  end if
 
   ! Call the DGEMM routine
   call dgemm(transa, transb, m, n, k, alpha, A, lda, B, ldb, beta, C, ldc)
