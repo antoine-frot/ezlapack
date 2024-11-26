@@ -1,42 +1,41 @@
+# Compiler and Flags
+FC = gfortran
+FLAGS = -O3
+
+# Directories
 SRC_DIR = src
 TEST_DIR = test
 BIN_DIR = bin
 
+# Source Files
 SRC_FILES = $(SRC_DIR)/dgemm_wrapper.f90
-TEST_FILES = $(TEST_DIR)/test_dgemm.f90
+TEST_FILES = $(TEST_DIR)/test_matrice_mult_d.f90
 
-OBJ_FILES = $(BIN_DIR)/dgemm_wrapper.o $(BIN_DIR)/test_dgemm.o
-EXE = $(BIN_DIR)/test_dgemm
+# Object Files
+OBJ_FILES = $(BIN_DIR)/dgemm_wrapper.o
 
-FC = gfortran
-FCFLAGS = -O0 -g
-LIBS = -lblas -llapack
+# Executable
+EXEC = $(BIN_DIR)/test_matrices
 
-all: $(EXE)
+# Default target
+.PHONY: all clean
 
-# Create bin directory if it doesn't exist
+all: $(EXEC)
+
+# Rule for creating the executable
+$(EXEC): $(OBJ_FILES) $(TEST_FILES)
+	$(FC) $(FLAGS) -o $@ $(TEST_FILES) $(OBJ_FILES) -lblas
+	rm $(OBJ_FILES)
+
+# Rule for compiling dgemm_wrapper.f90
+$(BIN_DIR)/dgemm_wrapper.o: $(SRC_FILES) | $(BIN_DIR)
+	$(FC) $(FLAGS) -c $< -o $@
+
+# Ensure bin directory exists
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
-# Compile the dgemm wrapper to an object file
-$(BIN_DIR)/dgemm_wrapper.o: $(SRC_FILES) | $(BIN_DIR)
-	$(FC) $(FCFLAGS) -c $(SRC_FILES) -o $(BIN_DIR)/dgemm_wrapper.o
-
-# Compile the test program to an object file
-$(BIN_DIR)/test_dgemm.o: $(TEST_FILES) | $(BIN_DIR)
-	$(FC) $(FCFLAGS) -c $(TEST_FILES) -o $(BIN_DIR)/test_dgemm.o
-
-# Link the test program with the dgemm wrapper
-$(EXE): $(OBJ_FILES)
-	$(FC) $(FCFLAGS) $(OBJ_FILES) -o $(EXE) $(LIBS)
-	rm -f $(OBJ_FILES)
-
-# Clean up object files and executables
+# Clean up build files
 clean:
-	rm -f $(OBJ_FILES) $(EXE)
-
-distclean: clean
 	rm -rf $(BIN_DIR)
-
-.PHONY: all clean distclean
 
