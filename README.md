@@ -10,7 +10,7 @@ It's purpose is to use the speed of the LAPACK library without all this contrain
 
 The EzLAPACK wrapper can be downloaded on Github as Git repository.
 ```
-git clone https://github.com/antoine-frot/fortran90_wrapper.git
+git clone https://github.com/antoine-frot/ezlapack.git
 ```
 The LAPACK and BLAS library should be installed.
 ```
