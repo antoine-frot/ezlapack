@@ -6,11 +6,11 @@ program test_matrice_mult_d
 
   integer          :: N, i
   double precision :: t_start, t_end
-  integer          :: size_mat(6)
+  integer          :: size_mat(3)
   double precision :: alpha, beta
-  double precision, allocatable :: A(:,:), B(:,:), C(:,:)
+  double precision, allocatable :: A(:,:), B(:,:), C(:,:), D(:,:)
 
-  size_mat = (/ 10, 100, 1000, 2000, 5000, 10000 /)
+  size_mat = (/ 10, 100, 1000/)
 
   do i = 1, size(size_mat)
     N = size_mat(i)
@@ -37,11 +37,75 @@ program test_matrice_mult_d
 
     ! Wrapper section
     call cpu_time(t_start)
-    call ez_matmul('N', 'N', alpha, A, B, beta, C)
+    call ez_matmul(A, B, C)
     call cpu_time(t_end)
     write(*,'(A30,E12.6,A10,I9)') 'CPU time for wrapper ', t_end - t_start, ' s for N = ', N
 
     deallocate(A, B, C)
   end do
+
+  !Test of all default arguments
+  N=30
+  allocate(A(N, N), B(N, N), C(N, N), D(N,N))
+
+  call random_number(A)
+  call random_number(B)
+
+  D = matmul(A, B)
+
+  call ez_matmul(A, B, C)
+  if (any(D /= C)) then
+    print *, "Test failed (1)"
+    print *, "ez_matmul", C
+    print *, "matmul", D
+    stop
+  end if
+
+  call ez_matmul('N', 'N', A, B, C)
+  if (any(D /= C)) then
+    print *, "Test failed (2)"
+  end if
+
+  call ez_matmul(1d0, A, B, C)
+  if (any(D /= C)) then
+    print *, "Test failed (3)"
+  end if
+
+  call ez_matmul(A, B, 0d0, C)
+  if (any(D /= C)) then
+    print *, "Test failed (4)"
+  end if
+
+  call ez_matmul('N', 'N', A, B, 0d0, C)
+  if (any(D /= C)) then
+    print *, "Test failed (5)"
+  end if
+
+  call ez_matmul('N', 'N', 1d0, A, B, C)
+  if (any(D /= C)) then
+    print *, "Test failed (6)"
+  end if
+
+  call ez_matmul(1d0, A, B, 0d0, C)
+  if (any(D /= C)) then
+    print *, "Test failed (7)"
+  end if
+
+  !Test dgemm directly with ez_matmul
+
+  call random_number(A)
+  call random_number(B)
+  call random_number(C)
+  D = C
+
+  call dgemm('T', 'T', N, N, N, 4.7d0, A, N, B, N, 6.9d0, D, N)
+  call ez_matmul('T', 'T', 4.7d0, A, B, 6.9d0, C)
+
+  if (any(D /= C)) then
+    print *, "Test failed: dgemm doesn't match ez_matmul"
+  end if
+
+  print *, "Test finished"
+
 end program test_matrice_mult_d
 
