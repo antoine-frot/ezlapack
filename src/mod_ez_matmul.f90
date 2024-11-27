@@ -114,13 +114,13 @@ contains
       if (transb == 'N') then
         if (n /= size(B,1) .or. m /= size(A,1) .or. k /= size(B,2)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       else
         if (n /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       end if
@@ -129,13 +129,13 @@ contains
       if (transb == 'N') then
         if (n /= size(B,1) .or. m /= size(A,2) .or. k /= size(B,2)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       else
         if (n /= size(B,2) .or. m /= size(A,2) .or. k /= size(B,1)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       end if
@@ -228,13 +228,13 @@ contains
       if (transb == 'N') then
         if (n /= size(B,1) .or. m /= size(A,1) .or. k /= size(B,2)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       else
         if (n /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       end if
@@ -243,13 +243,13 @@ contains
       if (transb == 'N') then
         if (n /= size(B,1) .or. m /= size(A,2) .or. k /= size(B,2)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       else
         if (n /= size(B,2) .or. m /= size(A,2) .or. k /= size(B,1)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       end if
@@ -341,13 +341,13 @@ contains
       if (transb == 'N') then
         if (n /= size(B,1) .or. m /= size(A,1) .or. k /= size(B,2)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       else
         if (n /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       end if
@@ -356,13 +356,13 @@ contains
       if (transb == 'N') then
         if (n /= size(B,1) .or. m /= size(A,2) .or. k /= size(B,2)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       else
         if (n /= size(B,2) .or. m /= size(A,2) .or. k /= size(B,1)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       end if
@@ -454,13 +454,13 @@ contains
       if (transb == 'N') then
         if (n /= size(B,1) .or. m /= size(A,1) .or. k /= size(B,2)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       else
         if (n /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       end if
@@ -469,13 +469,13 @@ contains
       if (transb == 'N') then
         if (n /= size(B,1) .or. m /= size(A,2) .or. k /= size(B,2)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       else
         if (n /= size(B,2) .or. m /= size(A,2) .or. k /= size(B,1)) then
           print *, "Dimensions don't match!"
-          print *, "m: ", m, "n: ", n, "k: ", k
+          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
           stop
         end if
       end if
