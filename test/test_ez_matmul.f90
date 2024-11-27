@@ -6,11 +6,11 @@ program test_matrice_mult_d
 
   integer          :: N, i
   double precision :: t_start, t_end
-  integer          :: size_mat(3)
+  integer          :: size_mat(5)
   double precision :: alpha, beta
   double precision, allocatable :: A(:,:), B(:,:), C(:,:), D(:,:)
 
-  size_mat = (/ 10, 100, 1000/)
+  size_mat = (/ 10, 100, 1000, 2000, 5000/)
 
   do i = 1, size(size_mat)
     N = size_mat(i)
@@ -45,7 +45,8 @@ program test_matrice_mult_d
   end do
 
   !Test of all default arguments
-  N=30
+  N=2000
+  print *, "Matrices de taille ", N, " * ", N
   allocate(A(N, N), B(N, N), C(N, N), D(N,N))
 
   call random_number(A)
@@ -56,39 +57,43 @@ program test_matrice_mult_d
   call ez_matmul(A, B, C)
   if (any(D /= C)) then
     print *, "Test failed (1)"
-    print *, "ez_matmul", C
-    print *, "matmul", D
-    stop
+    print *, maxval(abs(D-C))
   end if
 
   call ez_matmul('N', 'N', A, B, C)
   if (any(D /= C)) then
     print *, "Test failed (2)"
+    print *, maxval(abs(D-C))
   end if
 
   call ez_matmul(1d0, A, B, C)
   if (any(D /= C)) then
     print *, "Test failed (3)"
+    print *, maxval(abs(D-C))
   end if
 
   call ez_matmul(A, B, 0d0, C)
   if (any(D /= C)) then
     print *, "Test failed (4)"
+    print *, maxval(abs(D-C))
   end if
 
   call ez_matmul('N', 'N', A, B, 0d0, C)
   if (any(D /= C)) then
     print *, "Test failed (5)"
+    print *, maxval(abs(D-C))
   end if
 
   call ez_matmul('N', 'N', 1d0, A, B, C)
   if (any(D /= C)) then
     print *, "Test failed (6)"
+    print *, maxval(abs(D-C))
   end if
 
   call ez_matmul(1d0, A, B, 0d0, C)
   if (any(D /= C)) then
     print *, "Test failed (7)"
+    print *, maxval(abs(D-C))
   end if
 
   !Test dgemm directly with ez_matmul
@@ -100,9 +105,11 @@ program test_matrice_mult_d
 
   call dgemm('T', 'T', N, N, N, 4.7d0, A, N, B, N, 6.9d0, D, N)
   call ez_matmul('T', 'T', 4.7d0, A, B, 6.9d0, C)
+  
 
   if (any(D /= C)) then
     print *, "Test failed: dgemm doesn't match ez_matmul"
+    print *, maxval(abs(D-C))
   end if
 
   print *, "Test finished"
