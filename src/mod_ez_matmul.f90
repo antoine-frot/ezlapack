@@ -71,7 +71,7 @@ contains
     real(4), intent(in)                                :: beta
     real(4), dimension(:,:), contiguous, intent(in)    :: A, B
     real(4), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                      :: transa, transb
+    character(len=1), intent(in)                       :: transa, transb
     call ez_sgemm(transA, transB, 1e0, A, B, beta, C)
   end subroutine ez_sgemm_alpha
 
@@ -185,7 +185,7 @@ contains
     real(8), intent(in)                                :: beta
     real(8), dimension(:,:), contiguous, intent(in)    :: A, B
     real(8), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                      :: transa, transb
+    character(len=1), intent(in)                       :: transa, transb
     call ez_dgemm(transA, transB, 1d0, A, B, beta, C)
   end subroutine ez_dgemm_alpha
 
@@ -298,7 +298,7 @@ contains
     complex, intent(in)                                :: beta
     complex, dimension(:,:), contiguous, intent(in)    :: A, B
     complex, dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                      :: transa, transb
+    character(len=1), intent(in)                       :: transa, transb
     call ez_cgemm(transA, transB, (1e0,0e0), A, B, beta, C)
   end subroutine ez_cgemm_alpha
 
@@ -389,7 +389,7 @@ contains
   subroutine ez_zgemm_alpha_beta(transa, transb, A, B, C)
     complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
     complex*16, dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                       :: transa, transb
+    character(len=1), intent(in)                          :: transa, transb
     call ez_zgemm(transA, transB, (1d0,0d0), A, B, (0d0,0d0), C)
   end subroutine ez_zgemm_alpha_beta
 
@@ -441,9 +441,9 @@ contains
     complex*16, intent(in)                                :: alpha, beta
     complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
     complex*16, dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                       :: transa, transb
+    character(len=1), intent(in)                          :: transa, transb
 
-    integer                                            :: m, n, k
+    integer                                               :: m, n, k
      
     ! Check dimensions
     m = size(C,1)
