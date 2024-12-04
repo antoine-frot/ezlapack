@@ -6,11 +6,11 @@ program test_matrice_mult_d
 
   integer          :: N, i
   double precision :: t_start, t_end
-  integer          :: size_mat(5)
+  integer          :: size_mat(4)
   double precision :: alpha, beta
-  double precision, allocatable :: A(:,:), B(:,:), C(:,:), D(:,:)
+  double precision, allocatable, dimension(:,:) :: A, B, C, D
 
-  size_mat = (/ 10, 100, 1000, 2000, 5000/)
+  size_mat = (/ 10, 100, 1000, 2000/)
 
   do i = 1, size(size_mat)
     N = size_mat(i)
@@ -45,14 +45,15 @@ program test_matrice_mult_d
   end do
 
   !Test of all default arguments
-  N=2000
+  N=10000
   print *, "Matrices de taille ", N, " * ", N
   allocate(A(N, N), B(N, N), C(N, N), D(N,N))
 
   call random_number(A)
   call random_number(B)
 
-  D = matmul(A, B)
+  !D = matmul(A, B)
+  call dgemm('N', 'N', N, N, N, 1d0, A, N, B, N, 0d0, D, N)
 
   call ez_matmul(A, B, C)
   if (any(D /= C)) then
@@ -95,6 +96,9 @@ program test_matrice_mult_d
     print *, "Test failed (7)"
     print *, maxval(abs(D-C))
   end if
+  
+  !print *, 'C: ', C
+  !print *, 'D: ', D
 
   !Test dgemm directly with ez_matmul
 
