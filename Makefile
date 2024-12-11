@@ -19,7 +19,7 @@ EXEC = $(BIN_DIR)/test_ez_matmul
 all: $(EXEC)
 
 $(EXEC): $(OBJ_FILES) $(TEST_OBJ_FILES)
-	$(FC) $(FLAGS) -o $@ $(TEST_OBJ_FILES) $(OBJ_FILES) $(LIB)
+	$(FC) $(FLAGS) -o $@ $? $(LIB)
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.f90 | $(BIN_DIR)
 	$(FC) $(FLAGS) -c $< -o $@
