@@ -2,6 +2,7 @@ program test_ezmatmul
   !
   ! Test file for ezmatmul
   use mod_ezmatmul
+  external random_complex, random_dcomplex
 
   implicit none
 
@@ -66,8 +67,6 @@ program test_ezmatmul
   !Test dgemm directly with ezmatmul
 
   call random_number(A)
-  call random_number(B)
-  call random_number(C)
   D = C
 
   call dgemm('T', 'T', N, N, N, 4.7d0, A, N, B, N, 6.9d0, D, N)
