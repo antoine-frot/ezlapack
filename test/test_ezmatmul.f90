@@ -1,8 +1,8 @@
 program test_ezmatmul
   !
   ! Test file for ezmatmul
-  use mod_ezmatmul
-  external random_complex, random_dcomplex
+  use module_ezmatmul
+  use m
 
   implicit none
 

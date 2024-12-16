@@ -1,4 +1,4 @@
-module mod_ezmatmul
+module module_ezmatmul
 
   use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
 
@@ -501,4 +501,4 @@ contains
 
   end subroutine ezzgemm
   
-end module mod_ezmatmul
+end module module_ezmatmul
