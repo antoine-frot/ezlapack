@@ -9,7 +9,7 @@ program test_matrice_mult_d
   double precision :: t_start, t_end
   integer          :: size_mat(4)
   double precision :: alpha, beta
-  double precision, allocatable, dimension(:,:) :: A, B, C, D
+  double precision, allocatable, dimension(:,:) :: A, B, C
 
   size_mat = (/ 10, 100, 1000, 2000/)
 
