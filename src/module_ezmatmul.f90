@@ -1,5 +1,19 @@
 module module_ezmatmul
-
+!-
+! Generic interface for lapack matrice multiplication (*gemm)
+!
+! Type can be real(4), real(8), complex or complex*16
+!
+! subroutine ezmatmul	(	character, optional  :: transa, (default = 'N')
+!                       character, optional  :: transb, (default = 'N')
+!                       type, optional 	     :: alpha,  (default = 1)
+!                       type, dimension(:,:) :: A,
+!                       type, dimension(:,:) :: B,
+!                       type, optional 	     :: beta,   (default = O)
+!                       type, dimension(:,:) :: C,
+!)
+!
+!
   use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
 
   implicit none
