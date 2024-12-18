@@ -32,7 +32,7 @@ use `mod_ez_matmul`
 
 ## ezmatmul 
 **Purpose:**                                                                       
-Generic interface for lapack matrice multiplication `gemm`                    
+Generic interface for LAPACK matrice multiplication `gemm`                    
 i.e. performs `C := alpha*op( A )*op( B ) + beta*C`                              
 where `alpha` and `beta` are scalars, `A`, `B` and `C` are matrices, and                 
 `op( X )` is one of `op( X ) = X` or `op( X ) = X**T` or `op( X ) = X**H`.
