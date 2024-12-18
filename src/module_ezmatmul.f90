@@ -51,6 +51,9 @@ module module_ezmatmul
 
   implicit none
 
+  private
+  public :: ezmatmul
+
   interface ezmatmul
     ! Generic interface
     module procedure ezsgemm,                  ezdgemm
