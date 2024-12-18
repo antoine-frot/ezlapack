@@ -34,11 +34,11 @@ use `mod_ez_matmul`
 **Purpose:**                                                                       
 Generic interface for lapack matrice multiplication `gemm`                    
 i.e. performs `C := alpha*op( A )*op( B ) + beta*C`                              
-where alpha and beta are scalars, A, B and C are matrices, and                 
+where `alpha` and `beta` are scalars, `A`, `B` and `C` are matrices, and                 
 `op( X )` is one of `op( X ) = X` or `op( X ) = X**T` or `op( X ) = X**H`.
 
 **Subroutine:**                                                                    
-Type can be real(4), real(8), complex or complex\*16,                           
+Type can be `real(4)`, `real(8)`, `complex` or `complex*16`,                           
 but all dummy arguments should have the same type.                             
 ```                                                                              
 subroutine ezmatmul ( character*1, optional (default = 'N') :: transa,         
@@ -49,6 +49,7 @@ subroutine ezmatmul ( character*1, optional (default = 'N') :: transa,
                       type,        optional (default =  0 ) :: beta,           
                       type, dimension(:,:), contiguous      :: C,              
 )                                                                              
+```                                                                               
 ```                                                                               
 transa (character\*1, optional (default = 'N')): specifies the form of op( A ). 
   if transa = 'N' or 'n',  op( A ) = A.                                        
@@ -69,11 +70,12 @@ B (type, dimension(:), contiguous): specifies the matrix B
 beta (type, optional (default = 0)): specifies the scalar beta.                
                                                                                
 C (type, dimension(:), contiguous): specifies the matrix C                     
+```                                                                               
 
 **Examples:**                                                                     
                                                                                
-call ezmatmul(A,B,C) computes C:= A\*B with the simplicity of matmul            
+`call ezmatmul(A,B,C)` computes `C:= A*B` with the simplicity of matmul            
 while harnessing the high performance of the LAPACK library.                   
                                                                                
-On the other hand, ezmatmul keep the versatility of gemm with for example:     
-call ezmatmul('C','T',(5d-4,8d6),A,B,(9d2,3d-7),C)                             
+On the other hand, `ezmatmul` keep the versatility of `gemm` with for example:     
+`call ezmatmul('C','T',(5d-4,8d6),A,B,(9d2,3d-7),C)`                             
