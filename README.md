@@ -53,13 +53,13 @@ subroutine ezmatmul ( character*1, optional (default = 'N') :: transa,
 ```                                                                               
 transa (character\*1, optional (default = 'N')): specifies the form of op( A ). 
   if transa = 'N' or 'n',  op( A ) = A.                                        
-  if transa = 'T' or 't',  op( A ) = A\*\*T.                                     
-  if transa = 'C' or 'c',  op( A ) = A\*\*H.                                     
+  if transa = 'T' or 't',  op( A ) = A**T.                                     
+  if transa = 'C' or 'c',  op( A ) = A**H.                                     
                                                                                
 transb (character\*1, optional (default = 'N')): specifies the form of op( B ). 
   if transb = 'N' or 'n',  op( B ) = B.                                        
-  if transb = 'T' or 't',  op( B ) = B\*\*T.                                     
-  if transb = 'C' or 'c',  op( B ) = B\*\*H.                                     
+  if transb = 'T' or 't',  op( B ) = B**T.                                     
+  if transb = 'C' or 'c',  op( B ) = B**H.                                     
                                                                                
 alpha (type, optional (default = 1)): specifies the scalar alpha.              
                                                                                
