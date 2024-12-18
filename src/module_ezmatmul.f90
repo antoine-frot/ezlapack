@@ -52,7 +52,7 @@ module module_ezmatmul
   implicit none
 
   interface ezmatmul
-  
+    ! Generic interface
     module procedure ezsgemm,                  ezdgemm
     module procedure ezcgemm,                  ezzgemm
     
@@ -145,8 +145,8 @@ contains
   end subroutine ezsgemm_beta
 
   subroutine ezsgemm_trans(alpha, A, B, beta, C)
-    !> Calls the SGEMM routines with default values for 
-    !> transa and transb ('N' and 'N', respectively).
+    ! Calls the SGEMM routines with default values for 
+    ! transa and transb ('N' and 'N', respectively).
     real(sp), intent(in)                                :: alpha, beta
     real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
     real(sp), dimension(:,:), contiguous, intent(inout) :: C
@@ -159,14 +159,12 @@ contains
 
   subroutine ezsgemm(transa, transb, alpha, A, B, beta, C)
 
-    implicit none
-
     real(sp), intent(in)                                :: alpha, beta
     real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
     real(sp), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                       :: transa, transb
+    character(len=1), intent(in)                        :: transa, transb
 
-    integer                                            :: m, n, k
+    integer                                             :: m, n, k
 
     ! Check dimensions
     m = size(C,1)
@@ -272,8 +270,6 @@ contains
 !------------------------------------!
 
   subroutine ezdgemm(transa, transb, alpha, A, B, beta, C)
-
-    implicit none
 
     real(dp), intent(in)                                :: alpha, beta
     real(dp), dimension(:,:), contiguous, intent(in)    :: A, B
@@ -386,8 +382,6 @@ contains
 
   subroutine ezcgemm(transa, transb, alpha, A, B, beta, C)
 
-    implicit none
-
     complex, intent(in)                                :: alpha, beta
     complex, dimension(:,:), contiguous, intent(in)    :: A, B
     complex, dimension(:,:), contiguous, intent(inout) :: C
@@ -498,8 +492,6 @@ contains
 !------------------------------------!
 
   subroutine ezzgemm(transa, transb, alpha, A, B, beta, C)
-
-    implicit none
 
     complex*16, intent(in)                                :: alpha, beta
     complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
