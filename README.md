@@ -41,7 +41,7 @@ where alpha and beta are scalars, A, B and C are matrices, and
 Type can be real(4), real(8), complex or complex\*16,                           
 but all dummy arguments should have the same type.                             
 ```                                                                              
-subroutine ezmatmul	( character\*1, optional (default = 'N') :: transa,         
+subroutine ezmatmul( character\*1, optional (default = 'N') :: transa,         
                       character\*1, optional (default = 'N') :: transb,         
                       type,         optional (default =  1 ) :: alpha,          
                       type, dimension(:,:), contiguous       :: A,              
