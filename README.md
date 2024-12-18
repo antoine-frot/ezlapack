@@ -32,15 +32,15 @@ use `mod_ez_matmul`
 
 ## ezmatmul 
 **Purpose:**                                                                       
-Generic interface for lapack matrice multiplication (\*gemm)                    
-i.e. performs `C := alpha\*op( A )\*op( B ) + beta\*C`                              
+Generic interface for lapack matrice multiplication `gemm`                    
+i.e. performs `C := alpha*op( A )*op( B ) + beta*C`                              
 where alpha and beta are scalars, A, B and C are matrices, and                 
-`op( X )` is one of `op( X ) = X` or `op( X ) = X\*\*T` or `op( X ) = X\*\*H`.
+`op( X )` is one of `op( X ) = X` or `op( X ) = X**T` or `op( X ) = X**H`.
 
 **Subroutine:**                                                                    
 Type can be real(4), real(8), complex or complex\*16,                           
 but all dummy arguments should have the same type.                             
-                                                                               
+```                                                                              
 subroutine ezmatmul	(	character\*1, optional (default = 'N') :: transa,         
                       character\*1, optional (default = 'N') :: transb,         
                       type,        optional (default =  1 ) :: alpha,          
@@ -49,7 +49,7 @@ subroutine ezmatmul	(	character\*1, optional (default = 'N') :: transa,
                       type,        optional (default =  0 ) :: beta,           
                       type, dimension(:,:), contiguous      :: C,              
 )                                                                              
-                                                                               
+```                                                                               
 transa (character\*1, optional (default = 'N')): specifies the form of op( A ). 
   if transa = 'N' or 'n',  op( A ) = A.                                        
   if transa = 'T' or 't',  op( A ) = A\*\*T.                                     
