@@ -7,7 +7,7 @@ module module_ezmatmul
 ! op( X ) is one of op( X ) = X or op( X ) = X**T or op( X ) = X**H.             !   
 !--------------------------------------------------------------------------------!       
 ! Subroutine:                                                                    !         
-! Type can be real(4), real(8), complex or complex*16,                           !           
+! Type can be real(4), real(8), complex(4) or complex(8),                           !
 ! but all dummy arguments should have the same type.                             !   
 !                                                                                !   
 ! subroutine ezmatmul	(	character*1, optional (default = 'N') :: transa,         !     
@@ -47,7 +47,6 @@ module module_ezmatmul
 ! On the other hand, ezmatmul keep the versatility of gemm with for example:     !   
 ! call ezmatmul('C','T',(5d-4,8d6),A,B,(9d2,3d-7),C)                             !     
 !--------------------------------------------------------------------------------!   
-  use, intrinsic :: iso_fortran_env, only: sp=>real32, dp=>real64
 
   implicit none
 
@@ -82,7 +81,7 @@ module module_ezmatmul
   
   end interface
 
-contains
+  contains
 
 !------------!
 ! SGEMM PART !
@@ -95,16 +94,16 @@ contains
   subroutine ezsgemm_trans_alpha_beta(A, B, C)
     ! Calls the SGEMM routines with default values for 
     ! transa, transb, alpha and beta ('N', 'N', 1e0 and 0e0, respectively).
-    real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(sp), dimension(:,:), contiguous, intent(inout) :: C
+    real(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(4), dimension(:,:), contiguous, intent(inout) :: C
     call ezsgemm('N', 'N', 1e0, A, B, 0e0, C)
   end subroutine ezsgemm_trans_alpha_beta
 
   subroutine ezsgemm_alpha_beta(transa, transb, A, B, C)
     ! Calls the SGEMM routines with default values for 
     ! alpha and beta (1e0 and 0e0, respectively).
-    real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(sp), dimension(:,:), contiguous, intent(inout) :: C
+    real(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(4), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezsgemm(transA, transB, 1e0, A, B, 0e0, C)
   end subroutine ezsgemm_alpha_beta
@@ -112,27 +111,27 @@ contains
   subroutine ezsgemm_trans_beta(alpha, A, B, C)
     ! Calls the SGEMM routines with default values for 
     ! transa, transb and beta ('N', 'N' and 0e0, respectively).
-    real(sp), intent(in)                                :: alpha
-    real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(sp), dimension(:,:), contiguous, intent(inout) :: C
+    real(4), intent(in)                                :: alpha
+    real(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(4), dimension(:,:), contiguous, intent(inout) :: C
     call ezsgemm('N', 'N', alpha, A, B, 0e0, C)
   end subroutine ezsgemm_trans_beta
 
   subroutine ezsgemm_trans_alpha(A, B, beta, C)
     ! Calls the SGEMM routines with default values for 
     ! transa, transb and alpha  ('N', 'N' and 1e0, respectively).
-    real(sp), intent(in)                                :: beta
-    real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(sp), dimension(:,:), contiguous, intent(inout) :: C
+    real(4), intent(in)                                :: beta
+    real(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(4), dimension(:,:), contiguous, intent(inout) :: C
     call ezsgemm('N', 'N', 1e0, A, B, beta, C)
   end subroutine ezsgemm_trans_alpha
 
   subroutine ezsgemm_alpha(transa, transb, A, B, beta, C)
     ! Calls the SGEMM routines with default values for 
     ! alpha (1e0).
-    real(sp), intent(in)                                :: beta
-    real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(sp), dimension(:,:), contiguous, intent(inout) :: C
+    real(4), intent(in)                                :: beta
+    real(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(4), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezsgemm(transA, transB, 1e0, A, B, beta, C)
   end subroutine ezsgemm_alpha
@@ -140,9 +139,9 @@ contains
   subroutine ezsgemm_beta(transa, transb, alpha, A, B, C)
     ! Calls the SGEMM routines with default values for 
     ! beta (0e0).
-    real(sp), intent(in)                                :: alpha
-    real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(sp), dimension(:,:), contiguous, intent(inout) :: C
+    real(4), intent(in)                                :: alpha
+    real(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(4), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezsgemm(transA, transB, alpha, A, B, 0e0, C)
   end subroutine ezsgemm_beta
@@ -150,9 +149,9 @@ contains
   subroutine ezsgemm_trans(alpha, A, B, beta, C)
     ! Calls the SGEMM routines with default values for 
     ! transa and transb ('N' and 'N', respectively).
-    real(sp), intent(in)                                :: alpha, beta
-    real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(sp), dimension(:,:), contiguous, intent(inout) :: C
+    real(4), intent(in)                                :: alpha, beta
+    real(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(4), dimension(:,:), contiguous, intent(inout) :: C
     call ezsgemm('N', 'N', alpha, A, B, beta, C)
   end subroutine ezsgemm_trans
 
@@ -162,9 +161,9 @@ contains
 
   subroutine ezsgemm(transa, transb, alpha, A, B, beta, C)
 
-    real(sp), intent(in)                                :: alpha, beta
-    real(sp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(sp), dimension(:,:), contiguous, intent(inout) :: C
+    real(4), intent(in)                                :: alpha, beta
+    real(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(4), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                        :: transa, transb
 
     integer                                             :: m, n, k
@@ -219,52 +218,52 @@ contains
 !----------------------------!
 
   subroutine ezdgemm_trans_alpha_beta(A, B, C)
-    real(dp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(dp), dimension(:,:), contiguous, intent(inout) :: C
+    real(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezdgemm('N', 'N', 1d0, A, B, 0d0, C)
   end subroutine ezdgemm_trans_alpha_beta
 
   subroutine ezdgemm_alpha_beta(transa, transb, A, B, C)
-    real(dp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(dp), dimension(:,:), contiguous, intent(inout) :: C
+    real(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezdgemm(transA, transB, 1d0, A, B, 0d0, C)
   end subroutine ezdgemm_alpha_beta
 
   subroutine ezdgemm_trans_beta(alpha, A, B, C)
-    real(dp), intent(in)                                :: alpha
-    real(dp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(dp), dimension(:,:), contiguous, intent(inout) :: C
+    real(8), intent(in)                                :: alpha
+    real(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezdgemm('N', 'N', alpha, A, B, 0d0, C)
   end subroutine ezdgemm_trans_beta
 
   subroutine ezdgemm_trans_alpha(A, B, beta, C)
-    real(dp), intent(in)                                :: beta
-    real(dp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(dp), dimension(:,:), contiguous, intent(inout) :: C
+    real(8), intent(in)                                :: beta
+    real(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezdgemm('N', 'N', 1d0, A, B, beta, C)
   end subroutine ezdgemm_trans_alpha
 
   subroutine ezdgemm_alpha(transa, transb, A, B, beta, C)
-    real(dp), intent(in)                                :: beta
-    real(dp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(dp), dimension(:,:), contiguous, intent(inout) :: C
+    real(8), intent(in)                                :: beta
+    real(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezdgemm(transA, transB, 1d0, A, B, beta, C)
   end subroutine ezdgemm_alpha
 
   subroutine ezdgemm_beta(transa, transb, alpha, A, B, C)
-    real(dp), intent(in)                                :: alpha
-    real(dp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(dp), dimension(:,:), contiguous, intent(inout) :: C
+    real(8), intent(in)                                :: alpha
+    real(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezdgemm(transA, transB, alpha, A, B, 0d0, C)
   end subroutine ezdgemm_beta
 
   subroutine ezdgemm_trans(alpha, A, B, beta, C)
-    real(dp), intent(in)                                :: alpha, beta
-    real(dp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(dp), dimension(:,:), contiguous, intent(inout) :: C
+    real(8), intent(in)                                :: alpha, beta
+    real(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezdgemm('N', 'N', alpha, A, B, beta, C)
   end subroutine ezdgemm_trans
 
@@ -274,9 +273,9 @@ contains
 
   subroutine ezdgemm(transa, transb, alpha, A, B, beta, C)
 
-    real(dp), intent(in)                                :: alpha, beta
-    real(dp), dimension(:,:), contiguous, intent(in)    :: A, B
-    real(dp), dimension(:,:), contiguous, intent(inout) :: C
+    real(8), intent(in)                                :: alpha, beta
+    real(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    real(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
 
     integer                                            :: m, n, k
@@ -330,52 +329,52 @@ contains
 !----------------------------!
 
   subroutine ezcgemm_trans_alpha_beta(A, B, C)
-    complex, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex, dimension(:,:), contiguous, intent(inout) :: C
+    complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(4), dimension(:,:), contiguous, intent(inout) :: C
     call ezcgemm('N', 'N', (1e0,0e0), A, B, (0e0,0e0), C)
   end subroutine ezcgemm_trans_alpha_beta
 
   subroutine ezcgemm_alpha_beta(transa, transb, A, B, C)
-    complex, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex, dimension(:,:), contiguous, intent(inout) :: C
+    complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(4), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezcgemm(transA, transB, (1e0,0e0), A, B, (0e0,0e0), C)
   end subroutine ezcgemm_alpha_beta
 
   subroutine ezcgemm_trans_beta(alpha, A, B, C)
-    complex, intent(in)                                :: alpha
-    complex, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex, dimension(:,:), contiguous, intent(inout) :: C
+    complex(4), intent(in)                                :: alpha
+    complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(4), dimension(:,:), contiguous, intent(inout) :: C
     call ezcgemm('N', 'N', alpha, A, B, (0e0,0e0), C)
   end subroutine ezcgemm_trans_beta
 
   subroutine ezcgemm_trans_alpha(A, B, beta, C)
-    complex, intent(in)                                :: beta
-    complex, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex, dimension(:,:), contiguous, intent(inout) :: C
+    complex(4), intent(in)                                :: beta
+    complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(4), dimension(:,:), contiguous, intent(inout) :: C
     call ezcgemm('N', 'N', (1e0,0e0), A, B, beta, C)
   end subroutine ezcgemm_trans_alpha
 
   subroutine ezcgemm_alpha(transa, transb, A, B, beta, C)
-    complex, intent(in)                                :: beta
-    complex, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex, dimension(:,:), contiguous, intent(inout) :: C
+    complex(4), intent(in)                                :: beta
+    complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(4), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezcgemm(transA, transB, (1e0,0e0), A, B, beta, C)
   end subroutine ezcgemm_alpha
 
   subroutine ezcgemm_beta(transa, transb, alpha, A, B, C)
-    complex, intent(in)                                :: alpha
-    complex, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex, dimension(:,:), contiguous, intent(inout) :: C
+    complex(4), intent(in)                                :: alpha
+    complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(4), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezcgemm(transA, transB, alpha, A, B, (0e0,0e0), C)
   end subroutine ezcgemm_beta
 
   subroutine ezcgemm_trans(alpha, A, B, beta, C)
-    complex, intent(in)                                :: alpha, beta
-    complex, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex, dimension(:,:), contiguous, intent(inout) :: C
+    complex(4), intent(in)                                :: alpha, beta
+    complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(4), dimension(:,:), contiguous, intent(inout) :: C
     call ezcgemm('N', 'N', alpha, A, B, beta, C)
   end subroutine ezcgemm_trans
 
@@ -385,9 +384,9 @@ contains
 
   subroutine ezcgemm(transa, transb, alpha, A, B, beta, C)
 
-    complex, intent(in)                                :: alpha, beta
-    complex, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex, dimension(:,:), contiguous, intent(inout) :: C
+    complex(4), intent(in)                                :: alpha, beta
+    complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(4), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
 
     integer                                            :: m, n, k
@@ -441,52 +440,52 @@ contains
 !----------------------------!
 
   subroutine ezzgemm_trans_alpha_beta(A, B, C)
-    complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex*16, dimension(:,:), contiguous, intent(inout) :: C
+    complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezzgemm('N', 'N', (1d0,0d0), A, B, (0d0,0d0), C)
   end subroutine ezzgemm_trans_alpha_beta
 
   subroutine ezzgemm_alpha_beta(transa, transb, A, B, C)
-    complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex*16, dimension(:,:), contiguous, intent(inout) :: C
+    complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                          :: transa, transb
     call ezzgemm(transA, transB, (1d0,0d0), A, B, (0d0,0d0), C)
   end subroutine ezzgemm_alpha_beta
 
   subroutine ezzgemm_trans_beta(alpha, A, B, C)
-    complex*16, intent(in)                                :: alpha
-    complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex*16, dimension(:,:), contiguous, intent(inout) :: C
+    complex(8), intent(in)                                :: alpha
+    complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezzgemm('N', 'N', alpha, A, B, (0d0,0d0), C)
   end subroutine ezzgemm_trans_beta
 
   subroutine ezzgemm_trans_alpha(A, B, beta, C)
-    complex*16, intent(in)                                :: beta
-    complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex*16, dimension(:,:), contiguous, intent(inout) :: C
+    complex(8), intent(in)                                :: beta
+    complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezzgemm('N', 'N', (1d0,0d0), A, B, beta, C)
   end subroutine ezzgemm_trans_alpha
 
   subroutine ezzgemm_alpha(transa, transb, A, B, beta, C)
-    complex*16, intent(in)                                :: beta
-    complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex*16, dimension(:,:), contiguous, intent(inout) :: C
+    complex(8), intent(in)                                :: beta
+    complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                      :: transa, transb
     call ezzgemm(transA, transB, (1d0,0d0), A, B, beta, C)
   end subroutine ezzgemm_alpha
 
   subroutine ezzgemm_beta(transa, transb, alpha, A, B, C)
-    complex*16, intent(in)                                :: alpha
-    complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex*16, dimension(:,:), contiguous, intent(inout) :: C
+    complex(8), intent(in)                                :: alpha
+    complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
     call ezzgemm(transA, transB, alpha, A, B, (0d0,0d0), C)
   end subroutine ezzgemm_beta
 
   subroutine ezzgemm_trans(alpha, A, B, beta, C)
-    complex*16, intent(in)                                :: alpha, beta
-    complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex*16, dimension(:,:), contiguous, intent(inout) :: C
+    complex(8), intent(in)                                :: alpha, beta
+    complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezzgemm('N', 'N', alpha, A, B, beta, C)
   end subroutine ezzgemm_trans
 
@@ -496,9 +495,9 @@ contains
 
   subroutine ezzgemm(transa, transb, alpha, A, B, beta, C)
 
-    complex*16, intent(in)                                :: alpha, beta
-    complex*16, dimension(:,:), contiguous, intent(in)    :: A, B
-    complex*16, dimension(:,:), contiguous, intent(inout) :: C
+    complex(8), intent(in)                                :: alpha, beta
+    complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
+    complex(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                          :: transa, transb
 
     integer                                               :: m, n, k
