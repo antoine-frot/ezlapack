@@ -13,45 +13,57 @@ MOD_DIR = module
 MOD_FILES = $(wildcard $(MOD_DIR)/mod*.f90)
 MOD_OBJ_FILES = $(MOD_FILES:$(MOD_DIR)/%.f90=$(BIN_DIR)/%.o)
 
+MAIN_FILE = $(SRC_DIR)/main_program.f90
+MAIN_OBJ_FILE = $(BIN_DIR)/main_program.o
 EXEC = $(BIN_DIR)/main_program
-MAIN_FILE = $(EXEC:$(BIN_DIR)/%=$(SRC_DIR)/%.f90)
-MAIN_OBJ_FILE = $(EXEC:$(BIN_DIR)/%=$(BIN_DIR)/%.o)
 
 TEST_FILES = $(wildcard $(TEST_DIR)/test*.f90)
-EXEC_TEST = $(TEST_FILES:$(TEST_DIR)/test%.f90=$(BIN_DIR)/test%)
-TEST_OBJ_FILES = $(TEST_FILES:$(TEST_DIR)/test%.f90=$(BIN_DIR)/test%.o)
+TEST_OBJ_FILES = $(TEST_FILES:$(TEST_DIR)/%.f90=$(BIN_DIR)/%.o)
+EXEC_TEST = $(TEST_FILES:$(TEST_DIR)/%.f90=$(BIN_DIR)/%)
 
-# Rules
-
+# Default target: build the main program
 all: $(EXEC)
 
+# Build and run the tests
 test: $(EXEC_TEST)
-	$(EXEC_TEST)
+	@echo "Running tests..."
+	@echo ""
+	@for exec in $(EXEC_TEST:$(BIN_DIR)/%=%); do \
+		echo "Running $$exec"; \
+		echo ""; \
+		$(BIN_DIR)/$$exec; \
+	done
 
+# Main program build rule
 $(EXEC): $(MOD_OBJ_FILES) $(MAIN_OBJ_FILE)
 	$(FC) $(FLAGS) -o $@ $^ $(LIB)
 
-$(EXEC_TEST): $(MOD_OBJ_FILES) $(TEST_OBJ_FILE)
+# Test program build rule
+$(BIN_DIR)/%: $(BIN_DIR)/%.o $(MOD_OBJ_FILES)
 	$(FC) $(FLAGS) -o $@ $^ $(LIB)
 
-# Explicitly compile the module file first
+# Compile test files
+$(BIN_DIR)/%.o: $(TEST_DIR)/%.f90 | $(BIN_DIR)
+	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
+
+# Compile main program
+$(MAIN_OBJ_FILE): $(MAIN_FILE) $(MOD_OBJ_FILES)
+	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
+
+# Compile module files
 $(BIN_DIR)/mod%.o: $(MOD_DIR)/mod%.f90 | $(BIN_DIR)
 	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
 	@mv *.mod $(BIN_DIR) 2>/dev/null || true
-
-# Compile the main program after modules
-$(MAIN_OBJ_FILE): $(MAIN_FILE) $(MOD_MOD_FILES)
-	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
-
-# Compile test files, ensuring module files are available in $(BIN_DIR)
-$(TEST_OBJ_FILE): $(TEST_FILES) $(MOD_MOD_FILES) | $(BIN_DIR)
-	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
 
 # Create binary directory if it doesn't exist
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
+# Clean rule
 .PHONY: clean
 clean:
-	rm -rf $(BIN_DIR)/
-	
+	rm -rf $(BIN_DIR)
+
+# Phony targets
+.PHONY: all test
+
