@@ -13,6 +13,8 @@ module random
     module procedure random_scomplex, random_dcomplex
   end interface random_complex
 
+  contains 
+
   subroutine random_scomplex(z)
     ! Generate a random single precision complex within the unit circle
     complex, intent(inout) :: z
@@ -30,7 +32,7 @@ module random
 
   subroutine random_dcomplex(z)
     ! Generate a random double precision complex within the unit circle
-    complex*16, intent(inout) :: z
+    complex(8), intent(inout) :: z
 
     real(8)                   :: r, theta
 
