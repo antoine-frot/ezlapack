@@ -1,4 +1,4 @@
-module random
+module module_random
   !------------------------------------------------!
   ! Purpose: Generic interface that generates      !
   ! a complex number of single or double precision.!
@@ -67,4 +67,4 @@ module random
     output = lower_bound + int(rand * (upper_bound - lower_bound + 1))
   end subroutine random_integer
 
-end module random
+end module module_random
