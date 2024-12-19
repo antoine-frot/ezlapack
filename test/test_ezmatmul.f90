@@ -1,8 +1,8 @@
 program test_ezmatmul
   !
   ! Test file for ezmatmul
-  use module_ezmatmul,       only ezmatmul
-  use module_random_complex, only random_complex
+  use module_ezmatmul, only ezmatmul
+  use module_random,   only random_complex, random_character
 
   implicit none
 
@@ -92,5 +92,5 @@ program test_ezmatmul
     print *, '!-------------!'
     print *, '! TEST FAILED !'
     print *, '!-------------!'
-
+  end if
 end program test_ezmatmul
