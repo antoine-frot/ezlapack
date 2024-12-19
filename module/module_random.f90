@@ -17,7 +17,7 @@ module random
 
   subroutine random_scomplex(z)
     ! Generate a random single precision complex within the unit circle
-    complex, intent(inout) :: z
+    complex, intent(out) :: z
 
     real                   :: r, theta
 
@@ -27,12 +27,12 @@ module random
     call random_number(theta)
     theta = 2.0 * 3.14159265358979323846 * theta
 
-    z = cmplx(r * cos(theta), r * sin(theta))
+    z = cmplx(r * cos(theta), r * sin(theta), kind=4)
   end subroutine random_scomplex
 
   subroutine random_dcomplex(z)
     ! Generate a random double precision complex within the unit circle
-    complex(8), intent(inout) :: z
+    complex(8), intent(out) :: z
 
     real(8)                   :: r, theta
 
@@ -42,13 +42,13 @@ module random
     call random_number(theta)
     theta = 2.0 * 3.14159265358979323846 * theta
 
-    z = cmplx(r * cos(theta), r * sin(theta))
+    z = cmplx(r * cos(theta), r * sin(theta), kind=8)
   end subroutine random_dcomplex
 
   subroutine random_character(character_array, output)
     ! Get a random character of an array of characters
     character(len=*), intent(in)    :: character_array(:)
-    character(len=*), intent(inout) :: output
+    character(len=*), intent(out) :: output
 
     integer                         :: random_int
 
@@ -59,7 +59,7 @@ module random
   subroutine random_integer(lower_bound, upper_bound, output)
     ! Get a random integer between the lowerBound and the upperBound included
     integer, intent(in)    :: lower_bound, upper_bound
-    integer, intent(inout) :: output
+    integer, intent(out) :: output
     
     real                   :: rand
 
