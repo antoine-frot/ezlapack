@@ -30,6 +30,7 @@ apt install make
 In your main program place just after program my-program-name
 use `mod_ez_matmul`
 
+First 'sudo make install' then make oublie pas -lezlapack -lblas et pas l'inversse et -I/usr/local/include/
 ## ezmatmul 
 **Purpose:**                                                                       
 Generic interface for LAPACK matrice multiplication `gemm`                    
