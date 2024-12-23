@@ -1,5 +1,5 @@
-module module_ezlapack
+module ezlapack
     use module_ezmatmul
     use module_random
-end module module_ezlapack
+end module ezlapack
 

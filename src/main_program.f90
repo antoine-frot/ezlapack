@@ -1,7 +1,7 @@
 
 program test_matrice_mult_d
 
-  use module_ezmatmul
+  use ezlapack
 
   implicit none
 

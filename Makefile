@@ -1,9 +1,10 @@
 # Compiler and Flags
 FC = gfortran
 FLAGS = -O3 -g -Wall
-LIB = -lblas -llapack
+LIB = -lezlapack -lblas -llapack
 LIB_NAME = ezlapack
-PATH_LIBRARY = /usr/local
+PATH_LIBRARY = /usr/local/lib
+PATH_MOD = /usr/local/include
 
 # Directories
 SRC_DIR = src
@@ -36,12 +37,12 @@ $(BIN_DIR)/$(LIB_NAME).o: $(MOD_OBJ_FILES)
 install: $(BIN_DIR)/lib$(LIB_NAME).a
 	@echo "Installing library..."
 	mkdir -p $(PATH_LIBRARY)/lib $(PATH_LIBRARY)/include
-	cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)/lib
-	cp $(BIN_DIR)/*.mod $(PATH_LIBRARY)/include
+	cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)
+	cp $(BIN_DIR)/*.mod $(PATH_MOD)
 	ldconfig
 
 # Build the main program
-$(EXEC): $(MOD_OBJ_FILES) $(MAIN_OBJ_FILE)
+$(EXEC): $(MAIN_OBJ_FILE)
 	$(FC) $(FLAGS) -o $@ $^ $(LIB)
 
 # Build test programs
@@ -60,7 +61,7 @@ $(BIN_DIR)/%.o: $(MOD_DIR)/%.f90 | $(BIN_DIR)
 	$(FC) $(FLAGS) -I$(BIN_DIR) -J$(BIN_DIR)  -c $< -o $@
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.f90 | $(BIN_DIR)
-	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
+	$(FC) $(FLAGS) -I$(PATH_MOD) -c $< -o $@
 
 $(BIN_DIR)/%.o: $(TEST_DIR)/%.f90 | $(BIN_DIR)
 	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
@@ -72,7 +73,7 @@ $(BIN_DIR):
 # Clean rule
 .PHONY: clean
 clean:
-	rm -rf $(BIN_DIR)
+	sudo rm -rf $(BIN_DIR)
 
 # Phony targets
 .PHONY: all test install
