@@ -2,6 +2,8 @@
 FC = gfortran
 FLAGS = -O3 -g -Wall
 LIB = -lblas -llapack
+LIB_NAME = ezlapack
+PATH_LIBRARY = /usr/local
 
 # Directories
 SRC_DIR = src
@@ -9,51 +11,59 @@ TEST_DIR = test
 BIN_DIR = bin
 MOD_DIR = module
 
-# Files
-MOD_FILES = $(wildcard $(MOD_DIR)/mod*.f90)
+# Source Files
+MOD_FILES = $(wildcard $(MOD_DIR)/module_*.f90)
 MOD_OBJ_FILES = $(MOD_FILES:$(MOD_DIR)/%.f90=$(BIN_DIR)/%.o)
-
 MAIN_FILE = $(SRC_DIR)/main_program.f90
-MAIN_OBJ_FILE = $(BIN_DIR)/main_program.o
-EXEC = $(BIN_DIR)/main_program
-
+MAIN_OBJ_FILE = $(MAIN_FILE:$(SRC_DIR)/%.f90=$(BIN_DIR)/%.o)
 TEST_FILES = $(wildcard $(TEST_DIR)/test*.f90)
 TEST_OBJ_FILES = $(TEST_FILES:$(TEST_DIR)/%.f90=$(BIN_DIR)/%.o)
+EXEC = $(BIN_DIR)/main_program
 EXEC_TEST = $(TEST_FILES:$(TEST_DIR)/%.f90=$(BIN_DIR)/%)
 
-# Default target: build the main program
+# Default target
 all: $(EXEC)
 
-# Build and run the tests
-test: $(EXEC_TEST)
-	@echo "Running tests..."
-	@echo ""
-	@for exec in $(EXEC_TEST:$(BIN_DIR)/%=%); do \
-		echo "Running $$exec"; \
-		echo ""; \
-		$(BIN_DIR)/$$exec; \
-	done
+# Build the static library
+$(BIN_DIR)/lib$(LIB_NAME).a: $(BIN_DIR)/$(LIB_NAME).o $(MOD_OBJ_FILES)
+	@echo "Archiving library..."
+	ar rcs $@ $^
 
-# Main program build rule
+$(BIN_DIR)/$(LIB_NAME).o: $(MOD_OBJ_FILES)
+	$(FC) $(FLAGS) -J$(BIN_DIR) -o $@ -c $(MOD_DIR)/$(LIB_NAME).f90 $(LIB)
+
+# Install the library
+install: $(BIN_DIR)/lib$(LIB_NAME).a
+	@echo "Installing library..."
+	mkdir -p $(PATH_LIBRARY)/lib $(PATH_LIBRARY)/include
+	cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)/lib
+	cp $(BIN_DIR)/*.mod $(PATH_LIBRARY)/include
+	ldconfig
+
+# Build the main program
 $(EXEC): $(MOD_OBJ_FILES) $(MAIN_OBJ_FILE)
 	$(FC) $(FLAGS) -o $@ $^ $(LIB)
 
-# Test program build rule
+# Build test programs
+test: $(EXEC_TEST)
+	@echo "Running tests..."
+	@for exec in $(EXEC_TEST:$(BIN_DIR)/%=%); do \
+		echo "Running $$exec..."; \
+		$(BIN_DIR)/$$exec; \
+	done
+
 $(BIN_DIR)/%: $(BIN_DIR)/%.o $(MOD_OBJ_FILES)
 	$(FC) $(FLAGS) -o $@ $^ $(LIB)
 
-# Compile test files
+# Compile object files
+$(BIN_DIR)/%.o: $(MOD_DIR)/%.f90 | $(BIN_DIR)
+	$(FC) $(FLAGS) -I$(BIN_DIR) -J$(BIN_DIR)  -c $< -o $@
+
+$(BIN_DIR)/%.o: $(SRC_DIR)/%.f90 | $(BIN_DIR)
+	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
+
 $(BIN_DIR)/%.o: $(TEST_DIR)/%.f90 | $(BIN_DIR)
 	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
-
-# Compile main program
-$(MAIN_OBJ_FILE): $(MAIN_FILE) $(MOD_OBJ_FILES)
-	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
-
-# Compile module files
-$(BIN_DIR)/mod%.o: $(MOD_DIR)/mod%.f90 | $(BIN_DIR)
-	$(FC) $(FLAGS) -I$(BIN_DIR) -c $< -o $@
-	@mv *.mod $(BIN_DIR) 2>/dev/null || true
 
 # Create binary directory if it doesn't exist
 $(BIN_DIR):
@@ -65,5 +75,5 @@ clean:
 	rm -rf $(BIN_DIR)
 
 # Phony targets
-.PHONY: all test
+.PHONY: all test install
 
