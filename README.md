@@ -1,14 +1,9 @@
 # EzLAPACK: The LAPACK Wrapper
 
-## What is EzLAPACK?
+## Overview
 
-EzLAPACK is a lightweight wrapper for the LAPACK library, written in `Fortran 90`. It is designed to:
-
-- Simplify the use of the LAPACK library.
-- Minimize constraints such as the large number of dummy arguments.
-- Compensate for the lack of generic templates in Fortran.
-
-With EzLAPACK, you can harness the speed and efficiency of LAPACK without the usual complexity.
+EzLAPACK is a lightweight wrapper for the LAPACK library, written in `Fortran 90`.
+It provides an easy-to-use interface for leveraging LAPACK's performance while minimizing its common constraints, such as the large number of dummy arguments and the lack of generic templates.
 
 ---
 
@@ -26,6 +21,12 @@ To install these on a Debian-based system (e.g., Ubuntu), run:
 
 ```bash
 sudo apt install gfortran make liblapack-dev libblas-dev
+```
+
+To install these on a macOS system, run:
+
+```bash
+brew install gfortran make lapack
 ```
 
 ### Installing EzLAPACK
@@ -56,7 +57,7 @@ sudo apt install gfortran make liblapack-dev libblas-dev
 
 ### Using EzLAPACK in Your Program
 
-To use EzLAPACK, include the following statement at the beginning of your Fortran program:
+To integrate EzLAPACK, include the following statement at the beginning of your Fortran program:
 
 ```fortran
 program program_name
@@ -72,16 +73,13 @@ gfortran -J/usr/local/include -o program_name program_name.f90 -lezlapack -lblas
 ```
 
 #### Notes:
-- **Order of Libraries:** Place `-lezlapack` before `-lblas -llapack`.
+- **Library Order:** Place `-lezlapack` before `-lblas -llapack`.
 - **Module Path:** The `-J` flag specifies the directory of the `ezlapack.mod` file. By default, it is `/usr/local/include`. This can be customized in the `Makefile` by modifying the `PATH_MOD` variable before installation.
-
-For example, update the following line in the `Makefile`:
-
 ```make
 PATH_MOD = /your/custom/path
 ```
 
-Then reinstall using:
+Then reinstall EzLAPACK using:
 
 ```bash
 sudo make install
@@ -109,7 +107,7 @@ where:
 
 #### Example Usage:
 
-1. Simplified matrix multiplication:
+1. Basic Matrix Multiplication:
 
     ```fortran
     call ezmatmul(A, B, C)
@@ -117,11 +115,13 @@ where:
 
     This computes `C := A * B` using LAPACK's performance while maintaining the simplicity of Fortran's `matmul`.
 
-2. Advanced usage:
+2. Advanced Usage:
 
     ```fortran
-    call ezmatmul('C', 'T', (5d-4, 8d6), A, B, (9d2, 3d-7), C)
+    call ezmatmul('C', 'T', 8d6, A, B, -3d-7, C)
     ```
+
+    This computes `C := 8d6 * A**H * B**T - 3d-7 * C`
 
 #### Subroutine Definition:
 
@@ -140,24 +140,20 @@ subroutine ezmatmul(
 #### Parameters:
 
 - `transa`: (optional, default = `'N'`) Specifies the operation applied to matrix `A`:
-    - `'N'`: `op(A) = A`
-    - `'T'`: `op(A) = A**T`
-    - `'C'`: `op(A) = A**H`
+    - `'N'`: No transpose, `op(A) = A`.
+    - `'T'`: Transpose, `op(A) = A**T`.
+    - `'C'`: Hermitian, `op(A) = A**H`.
 
 - `transb`: (optional, default = `'N'`) Specifies the operation applied to matrix `B`:
-    - `'N'`: `op(B) = B`
-    - `'T'`: `op(B) = B**T`
-    - `'C'`: `op(B) = B**H`
+    - `'N'`: No transpose, `op(B) = B`.
+    - `'T'`: Transpose, `op(B) = B**T`.
+    - `'C'`: Hermitian, `op(B) = B**H`.
 
 - `alpha`: (optional, default = `1`) Scalar multiplier for `op(A) * op(B)`.
 
-- `A`: Matrix `A` (must be contiguous).
-
-- `B`: Matrix `B` (must be contiguous).
-
 - `beta`: (optional, default = `0`) Scalar multiplier for `C`.
 
-- `C`: Matrix `C` (must be contiguous).
+- `A`, `B`, `C`: Conitguous matrices with the same type.
 
 #### Supported Types:
 - `real(4)`
@@ -179,3 +175,8 @@ make test
 
 This will compile and execute test cases to ensure everything works as expected.
 
+## Contatct
+
+For questions, suggestions, or feedback, please contact:
+- Email: [Antoine Frot](antoine.frot@orange.fr)
+- GitHub: [EzLAPACK Repository](https://github.com/antoine-frot/ezlapack)
