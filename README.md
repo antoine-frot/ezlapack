@@ -6,27 +6,33 @@ EzLAPACK is a LAPACK wrapper written in `Fortran 90`.
 
 It's purpose is to use the speed of the LAPACK library without all this contraints
 
-## Installation guide
+## Installation
 
-The EzLAPACK wrapper can be downloaded on Github as Git repository.
+### Prerequisites
+
+You should have gfortran, make, the BLAS and LAPACK library installed.
+
+```
+sudo apt install gfortran
+sudo apt install make
+sudo apt install liblapack-dev libblas-dev
+```
+
+### ezLAPACK Installation
+
+The ezLAPACK wrapper can be downloaded on Github as Git repository. 
+Then you need to go inside the directory and run the installation command.
+
 ```
 git clone https://github.com/antoine-frot/ezlapack.git
+mkdir ezlapack/
+make install
 ```
-The LAPACK and BLAS library should be installed.
-```
-apt install liblapack-dev libblas-dev
-```
+
 ## User guide
 The EzLAPACK wrapper should be compiled as any other module.
 
 If you're still not using a compiler, you can install gfortran with
-```
-apt install gfortran
-```
-Install make to facilitate the compilation
-```
-apt install make
-```
 In your main program place just after program my-program-name
 use `mod_ez_matmul`
 
