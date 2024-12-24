@@ -179,6 +179,7 @@ This will compile and execute test cases to ensure everything works as expected.
 
 ## Coding Convention
 
+The code follows the coding conventions outlined in the [Fortran-lang Style Guide](https://fortran-lang.org/en/learn/best_practices/style_guide/). Subroutine names are designed to closely align with the names of intrinsic Fortran subroutines, while variable names adhere to the LAPACK names.
 
 ## Contatct
 
