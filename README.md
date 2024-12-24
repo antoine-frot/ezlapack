@@ -36,6 +36,13 @@ The directory can be deleted afterward.
 ## User guide
 
 At the beginning of your programm, in which you want to use ezLAPACK put the instruction `use ezlapack`
+
+```
+program program_name
+    use ezlapack
+    ! Your code
+end program program_name
+```
 The ezLAPACK wrapper should be compiled as other libraries, but required the LAPACK and BLAS library just as the location of the ezlapack.mod file.
 
 ```
