@@ -25,7 +25,7 @@ Then you need to go inside the directory and run the installation command.
 
 ```
 git clone https://github.com/antoine-frot/ezlapack.git
-mkdir ezlapack/
+cd ezlapack/
 make install
 ```
 
