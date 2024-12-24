@@ -5,6 +5,7 @@
 EzLAPACK is a LAPACK wrapper written in `Fortran 90`.
 
 It's purpose is to use the speed of the LAPACK library without all this contraints
+, namely the number of dummy arguments and the absence of generic templates.
 
 ## Installation
 
@@ -28,24 +29,45 @@ git clone https://github.com/antoine-frot/ezlapack.git
 cd ezlapack/
 make install
 ```
+You can now use ezLAPACK in your projects !
+
+The directory can be deleted afterward.
 
 ## User guide
-The EzLAPACK wrapper should be compiled as any other module.
 
-If you're still not using a compiler, you can install gfortran with
-In your main program place just after program my-program-name
-use `mod_ez_matmul`
+At the beginning of your programm, in which you want to use ezLAPACK put the instruction `use ezlapack`
+The ezLAPACK wrapper should be compiled as other libraries, but required the LAPACK and BLAS library just as the location of the ezlapack.mod file.
+
+```
+gfortran -J/usr/local/include -o program_name program_name.f90 -lezlapack -lblas -llapack
+```
+
+CAUTION: -lezlapack should be place before -lblas -llapack.
+-J indicate where is the ezlapack.mod file placed 
+by default it is /usr/local/include but this can be change in the Makefile before installation at the line `PATH_MOD = /usr/local/include`
 
 First 'sudo make install' then make oublie pas -lezlapack -lblas et pas l'inversse et -I/usr/local/include/
-## ezmatmul 
+
+## Subroutines of ezLAPACK
+
+### ezmatmul 
+
+**Examples:**                                                                     
+                                                                               
+`call ezmatmul(A, B, C)` computes `C:= A*B` with the simplicity of matmul            
+while harnessing the high performance of the LAPACK library.                   
+                                                                               
+On the other hand, `ezmatmul` keep the versatility of `gemm` with for example:     
+`call ezmatmul('C', 'T', (5d-4,8d6), A, B, (9d2,3d-7), C)`                             
+
 **Purpose:**                                                                       
-Generic interface for LAPACK matrice multiplication `gemm`                    
+Generic interface for LAPACK matrice multiplication `gemm` (i.e. `sgemm`, `dgemm`, `cgemm`, `zgemm`)    
 i.e. performs `C := alpha*op( A )*op( B ) + beta*C`                              
 where `alpha` and `beta` are scalars, `A`, `B` and `C` are matrices, and                 
 `op( X )` is one of `op( X ) = X` or `op( X ) = X**T` or `op( X ) = X**H`.
 
 **Subroutine:**                                                                    
-Type can be `real(4)`, `real(8)`, `complex` or `complex*16`,                           
+Type can be `real(4)`, `real(8)`, `complex(4)` or `complex(8)`,                           
 but all dummy arguments should have the same type.                             
 ```                                                                              
 subroutine ezmatmul ( character*1, optional (default = 'N') :: transa,         
@@ -79,10 +101,10 @@ beta (type, optional (default = 0)): specifies the scalar beta.
 C (type, dimension(:), contiguous): specifies the matrix C                     
 ```                                                                               
 
-**Examples:**                                                                     
-                                                                               
-`call ezmatmul(A,B,C)` computes `C:= A*B` with the simplicity of matmul            
-while harnessing the high performance of the LAPACK library.                   
-                                                                               
-On the other hand, `ezmatmul` keep the versatility of `gemm` with for example:     
-`call ezmatmul('C','T',(5d-4,8d6),A,B,(9d2,3d-7),C)`                             
+## Run Tests
+
+Go inside the ezlapack directory and run:
+
+```
+make test
+```
