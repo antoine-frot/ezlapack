@@ -25,25 +25,17 @@ EXEC_TEST = $(TEST_FILES:$(TEST_DIR)/%.f90=$(BIN_DIR)/%)
 # Default target
 all: $(EXEC)
 
-# Build the static library
-$(BIN_DIR)/lib$(LIB_NAME).a: $(BIN_DIR)/$(LIB_NAME).o $(MOD_OBJ_FILES)
-	@echo "Archiving library..."
-	ar rcs $@ $^
-
-$(BIN_DIR)/$(LIB_NAME).o: $(MOD_OBJ_FILES)
-	$(FC) $(FLAGS) -J$(BIN_DIR) -o $@ -c $(MOD_DIR)/$(LIB_NAME).f90 $(LIB)
+# Build the main program
+$(EXEC): $(MAIN_OBJ_FILE)
+	$(FC) $(FLAGS) -o $@ $^ $(LIB)
 
 # Install the library
 install: $(BIN_DIR)/lib$(LIB_NAME).a
 	@echo "Installing library..."
-	mkdir -p $(PATH_LIBRARY)/lib $(PATH_LIBRARY)/include
-	cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)
-	cp $(BIN_DIR)/*.mod $(PATH_MOD)
-	ldconfig
-
-# Build the main program
-$(EXEC): $(MAIN_OBJ_FILE)
-	$(FC) $(FLAGS) -o $@ $^ $(LIB)
+	sudo mkdir -p $(PATH_LIBRARY)/lib $(PATH_LIBRARY)/include
+	sudo cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)
+	sudo cp $(BIN_DIR)/*.mod $(PATH_MOD)
+	sudo ldconfig
 
 # Build test programs
 test: $(EXEC_TEST)
@@ -52,6 +44,14 @@ test: $(EXEC_TEST)
 		echo "Running $$exec..."; \
 		$(BIN_DIR)/$$exec; \
 	done
+
+# Build the static library
+$(BIN_DIR)/lib$(LIB_NAME).a: $(BIN_DIR)/$(LIB_NAME).o $(MOD_OBJ_FILES)
+	@echo "Archiving library..."
+	ar rcs $@ $^
+
+$(BIN_DIR)/$(LIB_NAME).o: $(MOD_OBJ_FILES)
+	$(FC) $(FLAGS) -J$(BIN_DIR) -o $@ -c $(MOD_DIR)/$(LIB_NAME).f90 $(LIB)
 
 $(BIN_DIR)/%: $(BIN_DIR)/%.o $(MOD_OBJ_FILES)
 	$(FC) $(FLAGS) -o $@ $^ $(LIB)
