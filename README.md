@@ -1,117 +1,181 @@
-# EzLAPACK: THE LAPACK wrapper
+# EzLAPACK: The LAPACK Wrapper
 
-## What is it?
+## What is EzLAPACK?
 
-EzLAPACK is a LAPACK wrapper written in `Fortran 90`.
+EzLAPACK is a lightweight wrapper for the LAPACK library, written in `Fortran 90`. It is designed to:
 
-It's purpose is to use the speed of the LAPACK library without all this contraints
-, namely the number of dummy arguments and the absence of generic templates.
+- Simplify the use of the LAPACK library.
+- Minimize constraints such as the large number of dummy arguments.
+- Compensate for the lack of generic templates in Fortran.
+
+With EzLAPACK, you can harness the speed and efficiency of LAPACK without the usual complexity.
+
+---
 
 ## Installation
 
 ### Prerequisites
 
-You should have gfortran, make, the BLAS and LAPACK library installed.
+Before installing EzLAPACK, ensure that the following tools and libraries are installed on your system:
 
+- `gfortran`
+- `make`
+- BLAS and LAPACK libraries
+
+To install these on a Debian-based system (e.g., Ubuntu), run:
+
+```bash
+sudo apt install gfortran make liblapack-dev libblas-dev
 ```
-sudo apt install gfortran
-sudo apt install make
-sudo apt install liblapack-dev libblas-dev
-```
 
-### ezLAPACK Installation
+### Installing EzLAPACK
 
-The ezLAPACK wrapper can be downloaded on Github as Git repository. 
-Then you need to go inside the directory and run the installation command.
+1. Clone the EzLAPACK repository from GitHub:
 
-```
-git clone https://github.com/antoine-frot/ezlapack.git
-cd ezlapack/
-make install
-```
-You can now use ezLAPACK in your projects !
+    ```bash
+    git clone https://github.com/antoine-frot/ezlapack.git
+    ```
 
-The directory can be deleted afterward.
+2. Navigate to the EzLAPACK directory:
 
-## User guide
+    ```bash
+    cd ezlapack/
+    ```
 
-At the beginning of your programm, in which you want to use ezLAPACK put the instruction `use ezlapack`
+3. Install EzLAPACK using `make`:
 
-```
+    ```bash
+    make install
+    ```
+
+4. You can now use EzLAPACK in your projects! After installation, the repository directory can be deleted if desired.
+
+---
+
+## User Guide
+
+### Using EzLAPACK in Your Program
+
+To use EzLAPACK, include the following statement at the beginning of your Fortran program:
+
+```fortran
 program program_name
     use ezlapack
-    ! Your code
+    ! Your code here
 end program program_name
 ```
-The ezLAPACK wrapper should be compiled as other libraries, but required the LAPACK and BLAS library just as the location of the ezlapack.mod file.
 
-```
+When compiling your program, ensure that the EzLAPACK module is linked properly. For example:
+
+```bash
 gfortran -J/usr/local/include -o program_name program_name.f90 -lezlapack -lblas -llapack
 ```
 
-CAUTION: -lezlapack should be place before -lblas -llapack.
--J indicate where is the ezlapack.mod file placed 
-by default it is /usr/local/include but this can be change in the Makefile before installation at the line `PATH_MOD = /usr/local/include`
+#### Notes:
+- **Order of Libraries:** Place `-lezlapack` before `-lblas -llapack`.
+- **Module Path:** The `-J` flag specifies the directory of the `ezlapack.mod` file. By default, it is `/usr/local/include`. This can be customized in the `Makefile` by modifying the `PATH_MOD` variable before installation.
 
-First 'sudo make install' then make oublie pas -lezlapack -lblas et pas l'inversse et -I/usr/local/include/
+For example, update the following line in the `Makefile`:
 
-## Subroutines of ezLAPACK
-
-### ezmatmul 
-
-**Examples:**                                                                     
-                                                                               
-`call ezmatmul(A, B, C)` computes `C:= A*B` with the simplicity of matmul            
-while harnessing the high performance of the LAPACK library.                   
-                                                                               
-On the other hand, `ezmatmul` keep the versatility of `gemm` with for example:     
-`call ezmatmul('C', 'T', (5d-4,8d6), A, B, (9d2,3d-7), C)`                             
-
-**Purpose:**                                                                       
-Generic interface for LAPACK matrice multiplication `gemm` (i.e. `sgemm`, `dgemm`, `cgemm`, `zgemm`)    
-i.e. performs `C := alpha*op( A )*op( B ) + beta*C`                              
-where `alpha` and `beta` are scalars, `A`, `B` and `C` are matrices, and                 
-`op( X )` is one of `op( X ) = X` or `op( X ) = X**T` or `op( X ) = X**H`.
-
-**Subroutine:**                                                                    
-Type can be `real(4)`, `real(8)`, `complex(4)` or `complex(8)`,                           
-but all dummy arguments should have the same type.                             
-```                                                                              
-subroutine ezmatmul ( character*1, optional (default = 'N') :: transa,         
-                      character*1, optional (default = 'N') :: transb,         
-                      type,        optional (default =  1 ) :: alpha,          
-                      type, dimension(:,:), contiguous      :: A,              
-                      type, dimension(:,:), contiguous      :: B,              
-                      type,        optional (default =  0 ) :: beta,           
-                      type, dimension(:,:), contiguous      :: C,              
-)                                                                              
-```                                                                               
-```                                                                               
-transa (character\*1, optional (default = 'N')): specifies the form of op( A ). 
-  if transa = 'N' or 'n',  op( A ) = A.                                        
-  if transa = 'T' or 't',  op( A ) = A**T.                                     
-  if transa = 'C' or 'c',  op( A ) = A**H.                                     
-                                                                               
-transb (character\*1, optional (default = 'N')): specifies the form of op( B ). 
-  if transb = 'N' or 'n',  op( B ) = B.                                        
-  if transb = 'T' or 't',  op( B ) = B**T.                                     
-  if transb = 'C' or 'c',  op( B ) = B**H.                                     
-                                                                               
-alpha (type, optional (default = 1)): specifies the scalar alpha.              
-                                                                               
-A (type, dimension(:), contiguous): specifies the matrix A                     
-                                                                               
-B (type, dimension(:), contiguous): specifies the matrix B                     
-                                                                               
-beta (type, optional (default = 0)): specifies the scalar beta.                
-                                                                               
-C (type, dimension(:), contiguous): specifies the matrix C                     
-```                                                                               
-
-## Run Tests
-
-Go inside the ezlapack directory and run:
-
+```make
+PATH_MOD = /your/custom/path
 ```
+
+Then reinstall using:
+
+```bash
+sudo make install
+```
+
+---
+
+## Subroutines in EzLAPACK
+
+### `ezmatmul`
+
+#### Purpose:
+`ezmatmul` provides a user-friendly interface for LAPACK's matrix multiplication routines (`gemm`, such as `sgemm`, `dgemm`, `cgemm`, `zgemm`).
+
+It computes:
+
+```text
+C := alpha * op(A) * op(B) + beta * C
+```
+
+where:
+- `alpha` and `beta` are scalars.
+- `A`, `B`, and `C` are matrices.
+- `op(X)` can be `X`, `X**T`, or `X**H`.
+
+#### Example Usage:
+
+1. Simplified matrix multiplication:
+
+    ```fortran
+    call ezmatmul(A, B, C)
+    ```
+
+    This computes `C := A * B` using LAPACK's performance while maintaining the simplicity of Fortran's `matmul`.
+
+2. Advanced usage:
+
+    ```fortran
+    call ezmatmul('C', 'T', (5d-4, 8d6), A, B, (9d2, 3d-7), C)
+    ```
+
+#### Subroutine Definition:
+
+```fortran
+subroutine ezmatmul(
+    character*1, optional (default = 'N') :: transa,
+    character*1, optional (default = 'N') :: transb,
+    type,        optional (default =  1 ) :: alpha,
+    type, dimension(:,:), contiguous      :: A,
+    type, dimension(:,:), contiguous      :: B,
+    type,        optional (default =  0 ) :: beta,
+    type, dimension(:,:), contiguous      :: C
+)
+```
+
+#### Parameters:
+
+- `transa`: (optional, default = `'N'`) Specifies the operation applied to matrix `A`:
+    - `'N'`: `op(A) = A`
+    - `'T'`: `op(A) = A**T`
+    - `'C'`: `op(A) = A**H`
+
+- `transb`: (optional, default = `'N'`) Specifies the operation applied to matrix `B`:
+    - `'N'`: `op(B) = B`
+    - `'T'`: `op(B) = B**T`
+    - `'C'`: `op(B) = B**H`
+
+- `alpha`: (optional, default = `1`) Scalar multiplier for `op(A) * op(B)`.
+
+- `A`: Matrix `A` (must be contiguous).
+
+- `B`: Matrix `B` (must be contiguous).
+
+- `beta`: (optional, default = `0`) Scalar multiplier for `C`.
+
+- `C`: Matrix `C` (must be contiguous).
+
+#### Supported Types:
+- `real(4)`
+- `real(8)`
+- `complex(4)`
+- `complex(8)`
+
+All arguments must have the same type.
+
+---
+
+## Running Tests
+
+To verify your EzLAPACK installation, navigate to the EzLAPACK directory and run:
+
+```bash
 make test
 ```
+
+This will compile and execute test cases to ensure everything works as expected.
+
