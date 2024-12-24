@@ -85,6 +85,8 @@ Then reinstall EzLAPACK using:
 sudo make install
 ```
 
+The use of `use ezlapack` and the flag `-J/usr/local/include` is essential due to the presence of the generic interface.
+
 ---
 
 ## Subroutines in EzLAPACK
@@ -174,6 +176,9 @@ make test
 ```
 
 This will compile and execute test cases to ensure everything works as expected.
+
+## Coding Convention
+
 
 ## Contatct
 
