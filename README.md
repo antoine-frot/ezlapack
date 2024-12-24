@@ -178,5 +178,5 @@ This will compile and execute test cases to ensure everything works as expected.
 ## Contatct
 
 For questions, suggestions, or feedback, please contact:
-- Email: [Antoine Frot](antoine.frot@orange.fr)
+- Email: [Antoine Frot](mailto:antoine.frot@orange.fr)
 - GitHub: [EzLAPACK Repository](https://github.com/antoine-frot/ezlapack)
