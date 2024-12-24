@@ -32,7 +32,7 @@ $(EXEC): $(MAIN_OBJ_FILE)
 # Install the library
 install: $(BIN_DIR)/lib$(LIB_NAME).a
 	@echo "Installing library..."
-	sudo mkdir -p $(PATH_LIBRARY)/lib $(PATH_LIBRARY)/include
+	sudo mkdir -p $(PATH_LIBRARY) $(PATH_MOD)
 	sudo cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)
 	sudo cp $(BIN_DIR)/*.mod $(PATH_MOD)
 	sudo ldconfig
