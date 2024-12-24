@@ -161,47 +161,48 @@ module module_ezmatmul
 
   subroutine ezsgemm(transa, transb, alpha, A, B, beta, C)
 
+    character(len=1), intent(in)                       :: transa, transb
     real(4), intent(in)                                :: alpha, beta
     real(4), dimension(:,:), contiguous, intent(in)    :: A, B
     real(4), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                        :: transa, transb
 
-    integer                                             :: m, n, k
+    logical                                            :: test_passed
+    integer                                            :: m, n, k
 
     ! Check dimensions
+    test_passed = .true.
     m = size(C,1)
-    k = size(C,2)
+    n = size(C,2)
 
     if (transa == 'N') then
-      n = size(A,2)
+      k = size(A,2)
       if (transb == 'N') then
-        if (n /= size(B,1) .or. m /= size(A,1) .or. k /= size(B,2)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,1) .or. m /= size(A,1) .or. n /= size(B,2)) then
+          test_passed = .false.
         end if
       else
-        if (n /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
+          test_passed = .false.
         end if
       end if
     else
-      n = size(A,1)
+      k = size(A,1)
       if (transb == 'N') then
-        if (n /= size(B,1) .or. m /= size(A,2) .or. k /= size(B,2)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,1) .or. k /= size(A,2) .or. n /= size(B,2)) then
+          test_passed = .false.
         end if
       else
-        if (n /= size(B,2) .or. m /= size(A,2) .or. k /= size(B,1)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,2) .or. k /= size(A,2) .or. n /= size(B,1)) then
+          test_passed = .false.
         end if
       end if
+    end if
+
+    if (.not. test_passed) then
+      print *, "Dimensions don't match!"
+      write(*, '(A, "A: (", I5, ", ", I5, ")")') "Size of the matrices: ", m, k
+      write(*, '(A, "B: (", I5, ", ", I5, ")")') "                      ", k, n
+      write(*, '(A, "C: (", I5, ", ", I5, ")")') "                      ", m, n
     end if
 
     call sgemm(transa, transb, m, n, k, alpha, A, m, B, k, beta, C, m)
@@ -273,47 +274,48 @@ module module_ezmatmul
 
   subroutine ezdgemm(transa, transb, alpha, A, B, beta, C)
 
+    character(len=1), intent(in)                       :: transa, transb
     real(8), intent(in)                                :: alpha, beta
     real(8), dimension(:,:), contiguous, intent(in)    :: A, B
     real(8), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                       :: transa, transb
 
+    logical                                            :: test_passed
     integer                                            :: m, n, k
-    
+
     ! Check dimensions
+    test_passed = .true.
     m = size(C,1)
-    k = size(C,2)
+    n = size(C,2)
 
     if (transa == 'N') then
-      n = size(A,2)
+      k = size(A,2)
       if (transb == 'N') then
-        if (n /= size(B,1) .or. m /= size(A,1) .or. k /= size(B,2)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,1) .or. m /= size(A,1) .or. n /= size(B,2)) then
+          test_passed = .false.
         end if
       else
-        if (n /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
+          test_passed = .false.
         end if
       end if
     else
-      n = size(A,1)
+      k = size(A,1)
       if (transb == 'N') then
-        if (n /= size(B,1) .or. m /= size(A,2) .or. k /= size(B,2)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,1) .or. k /= size(A,2) .or. n /= size(B,2)) then
+          test_passed = .false.
         end if
       else
-        if (n /= size(B,2) .or. m /= size(A,2) .or. k /= size(B,1)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,2) .or. k /= size(A,2) .or. n /= size(B,1)) then
+          test_passed = .false.
         end if
       end if
+    end if
+
+    if (.not. test_passed) then
+      print *, "Dimensions don't match!"
+      write(*, '(A, "A: (", I5, ", ", I5, ")")') "Size of the matrices: ", m, k
+      write(*, '(A, "B: (", I5, ", ", I5, ")")') "                      ", k, n
+      write(*, '(A, "C: (", I5, ", ", I5, ")")') "                      ", m, n
     end if
 
     call dgemm(transa, transb, m, n, k, alpha, A, m, B, k, beta, C, m)
@@ -384,47 +386,48 @@ module module_ezmatmul
 
   subroutine ezcgemm(transa, transb, alpha, A, B, beta, C)
 
+    character(len=1), intent(in)                          :: transa, transb
     complex(4), intent(in)                                :: alpha, beta
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                       :: transa, transb
 
-    integer                                            :: m, n, k
-     
+    logical                                               :: test_passed
+    integer                                               :: m, n, k
+
     ! Check dimensions
+    test_passed = .true.
     m = size(C,1)
-    k = size(C,2)
+    n = size(C,2)
 
     if (transa == 'N') then
-      n = size(A,2)
+      k = size(A,2)
       if (transb == 'N') then
-        if (n /= size(B,1) .or. m /= size(A,1) .or. k /= size(B,2)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,1) .or. m /= size(A,1) .or. n /= size(B,2)) then
+          test_passed = .false.
         end if
       else
-        if (n /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
+          test_passed = .false.
         end if
       end if
     else
-      n = size(A,1)
+      k = size(A,1)
       if (transb == 'N') then
-        if (n /= size(B,1) .or. m /= size(A,2) .or. k /= size(B,2)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,1) .or. k /= size(A,2) .or. n /= size(B,2)) then
+          test_passed = .false.
         end if
       else
-        if (n /= size(B,2) .or. m /= size(A,2) .or. k /= size(B,1)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,2) .or. k /= size(A,2) .or. n /= size(B,1)) then
+          test_passed = .false.
         end if
       end if
+    end if
+
+    if (.not. test_passed) then
+      print *, "Dimensions don't match!"
+      write(*, '(A, "A: (", I5, ", ", I5, ")")') "Size of the matrices: ", m, k
+      write(*, '(A, "B: (", I5, ", ", I5, ")")') "                      ", k, n
+      write(*, '(A, "C: (", I5, ", ", I5, ")")') "                      ", m, n
     end if
 
     call cgemm(transa, transb, m, n, k, alpha, A, m, B, k, beta, C, m)
@@ -495,47 +498,48 @@ module module_ezmatmul
 
   subroutine ezzgemm(transa, transb, alpha, A, B, beta, C)
 
+    character(len=1), intent(in)                          :: transa, transb
     complex(8), intent(in)                                :: alpha, beta
     complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(8), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                          :: transa, transb
 
+    logical                                               :: test_passed
     integer                                               :: m, n, k
-     
+
     ! Check dimensions
+    test_passed = .true.
     m = size(C,1)
-    k = size(C,2)
+    n = size(C,2)
 
     if (transa == 'N') then
-      n = size(A,2)
+      k = size(A,2)
       if (transb == 'N') then
-        if (n /= size(B,1) .or. m /= size(A,1) .or. k /= size(B,2)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,1) .or. m /= size(A,1) .or. n /= size(B,2)) then
+          test_passed = .false.
         end if
       else
-        if (n /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
+          test_passed = .false.
         end if
       end if
     else
-      n = size(A,1)
+      k = size(A,1)
       if (transb == 'N') then
-        if (n /= size(B,1) .or. m /= size(A,2) .or. k /= size(B,2)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,1) .or. k /= size(A,2) .or. n /= size(B,2)) then
+          test_passed = .false.
         end if
       else
-        if (n /= size(B,2) .or. m /= size(A,2) .or. k /= size(B,1)) then
-          print *, "Dimensions don't match!"
-          print *, "size(C,1): ", m, "size(A,2): ", n, "size(C,2): ", k
-          stop
+        if (k /= size(B,2) .or. k /= size(A,2) .or. n /= size(B,1)) then
+          test_passed = .false.
         end if
       end if
+    end if
+
+    if (.not. test_passed) then
+      print *, "Dimensions don't match!"
+      write(*, '(A, "A: (", I5, ", ", I5, ")")') "Size of the matrices: ", m, k
+      write(*, '(A, "B: (", I5, ", ", I5, ")")') "                      ", k, n
+      write(*, '(A, "C: (", I5, ", ", I5, ")")') "                      ", m, n
     end if
 
     call zgemm(transa, transb, m, n, k, alpha, A, m, B, k, beta, C, m)
