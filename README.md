@@ -69,7 +69,7 @@ end program program_name
 When compiling your program, ensure that the EzLAPACK module is linked properly. For example:
 
 ```bash
-gfortran -J/usr/local/include -o program_name program_name.f90 -lezlapack -lblas -llapack
+gfortran -I/usr/local/include -o program_name program_name.f90 -lezlapack -lblas -llapack
 ```
 
 #### Notes:
