@@ -205,7 +205,7 @@ module module_ezmatmul
       write(*, '(A, "C: (", I5, ", ", I5, ")")') "                      ", m, n
     end if
 
-    call sgemm(transa, transb, m, n, k, alpha, A, m, B, k, beta, C, m)
+    call sgemm(transa, transb, m, n, k, alpha, A, size(A,1), B, size(B,1), beta, C, size(C,1))
 
   end subroutine ezsgemm
 
@@ -290,23 +290,31 @@ module module_ezmatmul
     if (transa == 'N') then
       k = size(A,2)
       if (transb == 'N') then
-        if (k /= size(B,1) .or. m /= size(A,1) .or. n /= size(B,2)) then
+        if (k /= size(B, 1) .or. m /= size(A, 1) .or. n /= size(B, 2)) then
           test_passed = .false.
+        else
+          call dgemm(transa, transb, m, n, k, alpha, A, m, B, k, beta, C, m)
         end if
       else
-        if (k /= size(B,2) .or. m /= size(A,1) .or. k /= size(B,1)) then
+        if (k /= size(B, 2) .or. m /= size(A, 1) .or. n /= size(B, 1)) then
           test_passed = .false.
+        else
+          call dgemm(transa, transb, m, n, k, alpha, A, m, B, n, beta, C, m)
         end if
       end if
     else
       k = size(A,1)
       if (transb == 'N') then
-        if (k /= size(B,1) .or. k /= size(A,2) .or. n /= size(B,2)) then
+        if (k /= size(B, 1) .or. m /= size(A, 2) .or. n /= size(B, 2)) then
           test_passed = .false.
+        else
+          call dgemm(transa, transb, m, n, k, alpha, A, k, B, k, beta, C, m)
         end if
       else
-        if (k /= size(B,2) .or. k /= size(A,2) .or. n /= size(B,1)) then
+        if (k /= size(B,2) .or. m /= size(A, 2) .or. n /= size(B, 1)) then
           test_passed = .false.
+        else
+          call dgemm(transa, transb, m, n, k, alpha, A, k, B, n, beta, C, m)
         end if
       end if
     end if
@@ -317,8 +325,6 @@ module module_ezmatmul
       write(*, '(A, "B: (", I5, ", ", I5, ")")') "                      ", k, n
       write(*, '(A, "C: (", I5, ", ", I5, ")")') "                      ", m, n
     end if
-
-    call dgemm(transa, transb, m, n, k, alpha, A, m, B, k, beta, C, m)
 
   end subroutine ezdgemm
 
