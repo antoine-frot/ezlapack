@@ -94,12 +94,12 @@ The use of `use ezlapack` and the flag `-J/usr/local/include` is essential due t
 ### `ezmatmul`
 
 #### Purpose:
-`ezmatmul` provides a user-friendly interface for LAPACK's matrix multiplication routines (`gemm`, such as `sgemm`, `dgemm`, `cgemm`, `zgemm`).
+`ezmatmul` provides a user-friendly generic interface for LAPACK's matrix multiplication routines (`gemm`, such as `sgemm`, `dgemm`, `cgemm`, `zgemm`).
 
 It computes:
 
 ```text
-C := alpha * op(A) * op(B) + beta * C
+C := alpha*op(A)*op(B) + beta*C
 ```
 
 where:
@@ -126,6 +126,9 @@ where:
     This computes `C := 8d6 * A**H * B**T - 3d-7 * C`
 
 #### Subroutine Definition:
+
+Type can be either real(4), real(8), complex(4) or complex(8), 
+but all arguments should have the same type.
 
 ```fortran
 subroutine ezmatmul(
@@ -155,15 +158,7 @@ subroutine ezmatmul(
 
 - `beta`: (optional, default = `0`) Scalar multiplier for `C`.
 
-- `A`, `B`, `C`: Conitguous matrices with the same type.
-
-#### Supported Types:
-- `real(4)`
-- `real(8)`
-- `complex(4)`
-- `complex(8)`
-
-All arguments must have the same type.
+- `A`, `B`, `C`: Contiguous matrices with the same type.
 
 ---
 

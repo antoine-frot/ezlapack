@@ -1,52 +1,51 @@
 module module_ezmatmul
-!--------------------------------------------------------------------------------!
-! Purpose:                                                                       ! 
-! Generic interface for lapack matrice multiplication (*gemm)                    ! 
-! i.e. performs C := alpha*op( A )*op( B ) + beta*C                              !     
-! where alpha and beta are scalars, A, B and C are matrices, and                 ! 
-! op( X ) is one of op( X ) = X or op( X ) = X**T or op( X ) = X**H.             !   
-!--------------------------------------------------------------------------------!       
-! Subroutine:                                                                    !         
-! Type can be real(4), real(8), complex(4) or complex(8),                           !
-! but all dummy arguments should have the same type.                             !   
-!                                                                                !   
-! subroutine ezmatmul	(	character*1, optional (default = 'N') :: transa,         !     
-!                       character*1, optional (default = 'N') :: transb,         !     
-!                       type,        optional (default =  1 ) :: alpha,          !       
-!                       type, dimension(:,:), contiguous      :: A,              !       
-!                       type, dimension(:,:), contiguous      :: B,              !     
-!                       type,        optional (default =  0 ) :: beta,           !         
-!                       type, dimension(:,:), contiguous      :: C,              ! 
-! )                                                                              !  
-!                                                                                ! 
-! transa (character*1, optional (default = 'N')): specifies the form of op( A ). !
-!   if transa = 'N' or 'n',  op( A ) = A.                                        !
-!   if transa = 'T' or 't',  op( A ) = A**T.                                     !
-!   if transa = 'C' or 'c',  op( A ) = A**H.                                     !
-!                                                                                !
-! transb (character*1, optional (default = 'N')): specifies the form of op( B ). !
-!   if transb = 'N' or 'n',  op( B ) = B.                                        !
-!   if transb = 'T' or 't',  op( B ) = B**T.                                     !
-!   if transb = 'C' or 'c',  op( B ) = B**H.                                     !
-!                                                                                !
-! alpha (type, optional (default = 1)): specifies the scalar alpha.              !
-!                                                                                !
-! A (type, dimension(:), contiguous): specifies the matrix A                     !
-!                                                                                !
-! B (type, dimension(:), contiguous): specifies the matrix B                     !
-!                                                                                !
-! beta (type, optional (default = 0)): specifies the scalar beta.                !
-!                                                                                !
-! C (type, dimension(:), contiguous): specifies the matrix C                     !
-!--------------------------------------------------------------------------------!
-! Examples:                                                                      !
-!                                                                                !
-! call ezmatmul(A,B,C) computes C:= A*B with the simplicity of matmul            !
-! while harnessing the high performance of the LAPACK library.                   !
-!                                                                                !
-! On the other hand, ezmatmul keep the versatility of gemm with for example:     !   
-! call ezmatmul('C','T',(5d-4,8d6),A,B,(9d2,3d-7),C)                             !     
-!--------------------------------------------------------------------------------!   
+!--------------------------------------------------------------------------------
+! Purpose:                                                                      
+! User-friendly generic interface for lapack matrice multiplication (*gemm)     
+! i.e. performs C := alpha*op( A )*op( B ) + beta*C                             
+! where:                                                                        
+! - alpha and beta are scalars.                                                 
+! - A, B, and C are matrices.                                                   
+! - op(X) can be X, X**T, or X**H.                                              
+!--------------------------------------------------------------------------------       
+! Subroutine:                                                                   
+! Type can be either real(4), real(8), complex(4) or complex(8),                
+! but all arguments should have the same type.                                  
+!                                                                               
+! subroutine ezmatmul	(	                                                        
+!  character*1, optional (default = 'N') :: transa,                             
+!  character*1, optional (default = 'N') :: transb,                             
+!  type,        optional (default =  1 ) :: alpha,                              
+!  type, dimension(:,:), contiguous      :: A,                                  
+!  type, dimension(:,:), contiguous      :: B,                                  
+!  type,        optional (default =  0 ) :: beta,                               
+!  type, dimension(:,:), contiguous      :: C,                                  
+! )                                                                             
+!                                                                               
+! - transa: (optional, default = 'N') Specifies the operation applied to matrix A:
+!     - 'N': No transpose, op(A) = A.
+!     - 'T': Transpose, op(A) = A**T.
+!     - 'C': Hermitian, op(A) = A**H.
+! 
+! - transb: (optional, default = 'N') Specifies the operation applied to matrix B:
+!     - 'N': No transpose, op(B) = B.
+!     - 'T': Transpose, op(B) = B**T.
+!     - 'C': Hermitian, op(B) = B**H.
+! 
+! - alpha: (optional, default = 1) Scalar multiplier for op(A) * op(B).
+! 
+! - beta: (optional, default = 0) Scalar multiplier for C.
+! 
+! - A, B, C: Contiguous matrices with the same type.
+!---------------------------------------------------------------------------------
+! Examples:                                                                     
+!                                                                               
+! call ezmatmul(A,B,C) computes C:= A*B with the simplicity of matmul           
+! while harnessing the high performance of the LAPACK library.                  
+!                                                                               
+! On the other hand, ezmatmul keep the versatility of gemm with for example:    
+! call ezmatmul('C','T',(5d-4,8d6),A,B,(9d2,3d-7),C)                            
+!---------------------------------------------------------------------------------
 
   implicit none
 
