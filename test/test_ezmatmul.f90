@@ -1,5 +1,8 @@
 program test_ezmatmul
-
+  ! Test file for ezmatmul
+  !
+  ! Tests every optional argument separately for each LAPACK matrix multicplication subroutine (sgemm, dgemm, cgemm, zgemm)
+  ! For each case add a random test with random condition for every argument
   use ezlapack
 
   implicit none
