@@ -1,92 +1,141 @@
 program test_ezmatmul
-  !
-  ! Test file for ezmatmul
-  use module_ezmatmul
-  use module_random
+
+  use ezlapack
 
   implicit none
 
-  logical                                       :: test_passed
-  integer                                       :: N
-    ! Size of the matrices
-  double precision                              :: alpha, beta
-  double precision, allocatable, dimension(:,:) :: A, B, C, D
+  logical                              :: test_passed
+  character(len=1)                     :: transa, transb
+  integer                              :: m, n, k
+  real(8)                              :: alpha_dp, beta_dp
+  real(8), allocatable, dimension(:,:) :: A_dp, B_dp, C_dp, D_dp
   
+
+  call random_integer(1, 3000, m)
+  call random_integer(1, 3000, n)
+  call random_integer(1, 3000, k)
+  write(*, '(A, "A: (", I5, ", ", I5, ")")') "Size of the matrices: ", m, k
+  write(*, '(A, "B: (", I5, ", ", I5, ")")') "                      ", k, n
+  write(*, '(A, "C: (", I5, ", ", I5, ")")') "                      ", m, n
+
+!------------!
+! DGEMM PART !
+!------------!
+
+!----------------------------!
+! Handling default arguments !
+!----------------------------!
+
+  print *, "Test for dgemm"
+  test_passed = .true.
+  allocate(A_dp(m, k), B_dp(k, n), C_dp(m, n), D_dp(m, n))
+  call random_number(A_dp)
+  call random_number(B_dp)
 
   ! Test of all default arguments
-  test_passed = .true.
-  N=1000
-  print *, "Matrices de taille ", N, " * ", N
-  allocate(A(N, N), B(N, N), C(N, N), D(N,N))
+  call dgemm('N', 'N', m, n, k, 1d0, A_dp, m, B_dp, k, 0d0, D_dp, m)
 
-  call random_number(A)
-  call random_number(B)
-
-  call dgemm('N', 'N', N, N, N, 1d0, A, N, B, N, 0d0, D, N)
-
-  call ezmatmul(A, B, C)
-  if (any(D /= C)) then
-    print *, "Test failed (1)"
-    print *, 'Maximal difference between dgemm and ezmatmum: ', maxval(abs(D-C))
+  call ezmatmul(A_dp, B_dp, C_dp)
+  if (any(D_dp /= C_dp)) then
+    print *, "Test failed for ezdgemm_trans_alpha_beta"
+    print *, 'Maximal difference between dgemm and ezmatmul: ', maxval(abs(D_dp - C_dp))
     test_passed = .false.
   end if
 
-  call ezmatmul('N', 'N', A, B, C)
-  if (any(D /= C)) then
-    print *, "Test failed (2)"
-    print *, 'Maximal difference between dgemm and ezmatmum: ', maxval(abs(D-C))
+  call ezmatmul('N', 'N', A_dp, B_dp, C_dp)
+  if (any(D_dp /= C_dp)) then
+    print *, "Test failed for ezdgemm_alpha_beta"
+    print *, 'Maximal difference between dgemm and ezmatmul: ', maxval(abs(D_dp - C_dp))
     test_passed = .false.
   end if
 
-  call ezmatmul(1d0, A, B, C)
-  if (any(D /= C)) then
-    print *, "Test failed (3)"
-    print *, 'Maximal difference between dgemm and ezmatmum: ', maxval(abs(D-C))
+  call ezmatmul(1d0, A_dp, B_dp, C_dp)
+  if (any(D_dp /= C_dp)) then
+    print *, "Test failed for ezdgemm_trans_beta"
+    print *, 'Maximal difference between dgemm and ezmatmul: ', maxval(abs(D_dp - C_dp))
     test_passed = .false.
   end if
 
-  call ezmatmul(A, B, 0d0, C)
-  if (any(D /= C)) then
-    print *, "Test failed (4)"
-    print *, 'Maximal difference between dgemm and ezmatmum: ', maxval(abs(D-C))
+  call ezmatmul(A_dp, B_dp, 0d0, C_dp)
+  if (any(D_dp /= C_dp)) then
+    print *, "Test failed for ezdgemm_trans_alpha"
+    print *, 'Maximal difference between dgemm and ezmatmul: ', maxval(abs(D_dp - C_dp))
     test_passed = .false.
   end if
 
-  call ezmatmul('N', 'N', A, B, 0d0, C)
-  if (any(D /= C)) then
-    print *, "Test failed (5)"
-    print *, 'Maximal difference between dgemm and ezmatmum: ', maxval(abs(D-C))
+  call ezmatmul('N', 'N', A_dp, B_dp, 0d0, C_dp)
+  if (any(D_dp /= C_dp)) then
+    print *, "Test failed for ezdgemm_alpha"
+    print *, 'Maximal difference between dgemm and ezmatmul: ', maxval(abs(D_dp - C_dp))
     test_passed = .false.
   end if
 
-  call ezmatmul('N', 'N', 1d0, A, B, C)
-  if (any(D /= C)) then
-    print *, "Test failed (6)"
-    print *, 'Maximal difference between dgemm and ezmatmum: ', maxval(abs(D-C))
+  call ezmatmul('N', 'N', 1d0, A_dp, B_dp, C_dp)
+  if (any(D_dp /= C_dp)) then
+    print *, "Test failed for ezdgemm_beta"
+    print *, 'Maximal difference between dgemm and ezmatmul: ', maxval(abs(D_dp - C_dp))
     test_passed = .false.
   end if
 
-  call ezmatmul(1d0, A, B, 0d0, C)
-  if (any(D /= C)) then
-    print *, "Test failed (7)"
-    print *, 'Maximal difference between dgemm and ezmatmum: ', maxval(abs(D-C))
+  call ezmatmul(1d0, A_dp, B_dp, 0d0, C_dp)
+  if (any(D_dp /= C_dp)) then
+    print *, "Test failed for ezdgemm_trans"
+    print *, 'Maximal difference between dgemm and ezmatmul: ', maxval(abs(D_dp - C_dp))
     test_passed = .false.
   end if
   
-  ! An additionnal random test with all dummy arguments
-  call random_number(C)
-  D = C
-  call dgemm('T', 'T', N, N, N, 4.7d0, A, N, B, N, 6.9d0, D, N)
-  call ezmatmul('T', 'T', 4.7d0, A, B, 6.9d0, C)
+  call ezmatmul('N', 'N', 1d0, A_dp, B_dp, 0d0, C_dp)
+  if (any(D_dp /= C_dp)) then
+    print *, "Test failed for ezdgemm"
+    print *, 'Maximal difference between dgemm and ezmatmul: ', maxval(abs(D_dp - C_dp))
+    test_passed = .false.
+  end if
   
+!--------------------------------!
+! Test with all arguments random !
+!--------------------------------!
 
-  if (any(D /= C)) then
+  call random_character((/ 'N', 'T', 'C'/), transa)
+  call random_character((/ 'N', 'T', 'C'/), transb)
+
+  call random_number(alpha_dp)
+  call random_number(beta_dp)
+  alpha_dp = (alpha_dp - 0.5 ) * 10000
+  beta_dp  = (beta_dp  - 0.5 ) * 10000
+  call random_number(C_dp)
+  D_dp = C_dp
+
+  if (transa == 'N') then
+    if (transb == 'N') then
+      call dgemm(transa, transb, m, n, k, alpha_dp, A_dp, m, B_dp, k, beta_dp, D_dp, m)
+    else
+      deallocate(B_dp)
+      allocate(B_dp(n,k))
+      call dgemm(transa, transb, m, n, k, alpha_dp, A_dp, m, B_dp, n, beta_dp, D_dp, m)
+    end if
+  else 
+    deallocate(A_dp)
+    allocate(A_dp(k,m))
+    if (transb == 'N') then
+      call dgemm(transa, transb, m, n, k, alpha_dp, A_dp, k, B_dp, k, beta_dp, D_dp, m)
+    else
+      deallocate(B_dp)
+      allocate(B_dp(n,k))
+      call dgemm(transa, transb, m, n, k, alpha_dp, A_dp, k, B_dp, n, beta_dp, D_dp, m)
+    end if
+  end if
+
+  call ezmatmul(transa, transb, alpha_dp, A_dp, B_dp, beta_dp, C_dp)
+
+  if (any(D_dp /= C_dp)) then
     print *, "Random test with all dummy arguments failed for dgemm"
-    print *, 'Maximal difference between dgemm and ezmatmum: ', maxval(abs(D-C))
+    print *, 'Maximal difference between dgemm and ezmatmul: ', maxval(abs(D_dp - C_dp))
+    print *, "transa: ", trim(transa)
+    print *, "transb: ", trim(transb)
+    print *, "alpha_dp:", alpha_dp
+    print *, "beta_dp: ", beta_dp
     test_passed = .false.
   end if
-
-  print *, "Test finished for dgemm"
 
   if (.not. test_passed) then
     print *, '!-------------!'
