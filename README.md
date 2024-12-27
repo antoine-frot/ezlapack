@@ -74,7 +74,7 @@ gfortran -I/usr/local/include -o program_name program_name.f90 -lezlapack -lblas
 
 #### Notes:
 - **Library Order:** Place `-lezlapack` before `-lblas -llapack`.
-- **Module Path:** The `-J` flag specifies the directory of the `ezlapack.mod` file. By default, it is `/usr/local/include`. This can be customized in the `Makefile` by modifying the `PATH_MOD` variable before installation.
+- **Module Path:** The `-I` flag specifies the directory of the `ezlapack.mod` file. By default, it is `/usr/local/include`. This can be customized in the `Makefile` by modifying the `PATH_MOD` variable before installation.
 ```make
 PATH_MOD = /your/custom/path
 ```
