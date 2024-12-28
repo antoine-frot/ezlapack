@@ -3,7 +3,7 @@
 ## Overview
 
 EzLAPACK is a lightweight wrapper for the LAPACK library, written in `Fortran 90`.
-It provides an easy-to-use interface for leveraging LAPACK's performance while minimizing its common constraints, such as the large number of dummy arguments and the lack of generic templates.
+It provides an easy-to-use interface for leveraging LAPACK's performance while minimizing its common constraints, such as the large number of arguments and the lack of generic templates.
 
 ---
 
