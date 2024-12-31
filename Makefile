@@ -53,6 +53,7 @@ test: $(EXEC_TEST)
 	@for exec in $(EXEC_TEST:$(BIN_DIR)/%=%); do \
 		echo "Running $$exec..."; \
 		$(BIN_DIR)/$$exec; \
+		sleep 1; \
 	done
 
 $(BIN_DIR)/%: $(TEST_DIR)/%.f90 | $(BIN_DIR)
