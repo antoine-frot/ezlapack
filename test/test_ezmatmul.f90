@@ -2,32 +2,40 @@ program test_ezmatmul
   ! Test file for ezmatmul
   !
   ! Tests every optional argument separately for each LAPACK matrix multicplication subroutine (sgemm, dgemm, cgemm, zgemm)
-  ! For each case add a random test with random condition for every argument
+  ! For each case add a random test with random condition for every argument.
 
-  use ezlapack
+  use ezlapack, only: ezmatmul, random_integer, random_complex, random_character
 
   implicit none
 
-  logical                              :: test_passed
-  character(len=1)                     :: transa, transb
-  integer                              :: m, n, k
+  logical                                 :: test_passed
+  ! Variables that all the random conditions for the final test
+  character(len=1)                        :: transa, transb
+  integer                                 :: m, n, k
 
-  real(4)                              :: alpha_sp, beta_sp
-  real(4), allocatable, dimension(:,:) :: A_sp, B_sp, C_sp, D_sp
-  real(8)                              :: alpha_dp, beta_dp
-  real(8), allocatable, dimension(:,:) :: A_dp, B_dp, C_dp, D_dp
+  ! Variable for testing SGEMM
+  real(4)                                 :: alpha_sp, beta_sp
+  real(4),    allocatable, dimension(:,:) :: A_sp, B_sp, C_sp, D_sp
+  ! Variable for testing DGEMM
+  real(8)                                 :: alpha_dp, beta_dp
+  real(8),    allocatable, dimension(:,:) :: A_dp, B_dp, C_dp, D_dp
+  ! Variable for testing CGEMM
   complex(4)                              :: alpha_csp, beta_csp
   complex(4), allocatable, dimension(:,:) :: A_csp, B_csp, C_csp, D_csp
+  ! Variable for testing ZGEMM
   complex(8)                              :: alpha_cdp, beta_cdp
   complex(8), allocatable, dimension(:,:) :: A_cdp, B_cdp, C_cdp, D_cdp
   
 
+  ! Initiate the size of the matrices
   call random_integer(1, 2000, m)
   call random_integer(1, 2000, n)
   call random_integer(1, 2000, k)
   write(*, '(A, "A: (", I5, ", ", I5, ")")') "Size of the matrices: ", m, k
   write(*, '(A, "B: (", I5, ", ", I5, ")")') "                      ", k, n
   write(*, '(A, "C: (", I5, ", ", I5, ")")') "                      ", m, n
+
+  test_passed = .true.
 
 !------------!
 ! SGEMM PART !
@@ -38,7 +46,6 @@ program test_ezmatmul
 !----------------------------!
 
   print *, "Test for sgemm"
-  test_passed = .true.
   allocate(A_sp(m, k), B_sp(k, n), C_sp(m, n), D_sp(m, n))
   call random_number(A_sp)
   call random_number(B_sp)
@@ -157,7 +164,6 @@ program test_ezmatmul
 !----------------------------!
 
   print *, "Test for dgemm"
-  test_passed = .true.
   allocate(A_dp(m, k), B_dp(k, n), C_dp(m, n), D_dp(m, n))
   call random_number(A_dp)
   call random_number(B_dp)
@@ -276,7 +282,6 @@ program test_ezmatmul
 !----------------------------!
 
   print *, "Test for cgemm"
-  test_passed = .true.
   allocate(A_csp(m, k), B_csp(k, n), C_csp(m, n), D_csp(m, n))
   call random_complex(A_csp)
   call random_complex(B_csp)
@@ -395,7 +400,6 @@ program test_ezmatmul
 !----------------------------!
 
   print *, "Test for zgemm"
-  test_passed = .true.
   allocate(A_cdp(m, k), B_cdp(k, n), C_cdp(m, n), D_cdp(m, n))
   call random_complex(A_cdp)
   call random_complex(B_cdp)
