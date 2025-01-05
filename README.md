@@ -202,6 +202,19 @@ make test
 
 This will compile and execute test cases to ensure everything works as expected.
 
+## Dependencies
+
+This project relies on the following tools and libraries:
+
+- Fortran Compiler: gfortran 13.3.0
+- LAPACK: 3.11.0
+- BLAS: 3.11.0
+- Operating System: Ubuntu 22.04 (WSL)
+- Bash: 5.1.16
+- Make: 4.3
+
+We recommend replicating this setup for best results.
+
 ## Coding Convention
 
 The code follows the coding conventions outlined in the [Fortran-lang Style Guide](https://fortran-lang.org/en/learn/best_practices/style_guide/). Subroutine names are designed to closely align with the names of intrinsic Fortran subroutines, while variable names adhere to the LAPACK names.
