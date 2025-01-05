@@ -52,8 +52,9 @@ module module_ezmatmul
   private
   public :: ezmatmul
 
+  ! Generic interface for ezmatmul.
+  ! When ezmatmul is called, the program checks which of the following subroutines has the correct arguments.
   interface ezmatmul
-    ! Generic interface
     module procedure ezsgemm,                  ezdgemm
     module procedure ezcgemm,                  ezzgemm
     

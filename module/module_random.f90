@@ -1,14 +1,34 @@
 module module_random
-  !------------------------------------------------!
-  ! Purpose: Generic interface that generates      !
-  ! a complex number of single or double precision.!
-  !------------------------------------------------!
+  !-------------------------------------------------------------------------
+  ! Purpose: Provides a generic interface for generating random complex 
+  !          numbers, integers, and characters.
+  !
+  ! Description:
+  ! This module offers utilities for generating random values with specific
+  ! properties:
+  ! - Random complex numbers within the unit circle.
+  ! - Random integers within a user-specified range.
+  ! - Random selection from an array of characters.
+  !
+  ! Public Subroutines:
+  ! - random_complex(output_complex)
+  !   Generate random complex numbers (single or double precision) within
+  !   the unit circle. Supports scalars and arrays up to rank-2.
+  !
+  ! - random_integer(low, high, output_integer)
+  !   Generate a random integer between 'low' and 'high', inclusive.
+  !
+  ! - random_character(character_array, output_character)
+  !   Randomly select and return a character from an input array of strings.
+  !-------------------------------------------------------------------------
 
   implicit none
 
   private
   public :: random_complex, random_integer, random_character
   
+  ! Generic interface for random_complex
+  ! When random_complex is called, the program checks which of the following subroutines has the correct arguments.
   interface random_complex
     module procedure random_scomplex, random_dcomplex
     module procedure random_scomplex_rank1, random_dcomplex_rank1
@@ -18,7 +38,7 @@ module module_random
   contains 
 
   subroutine random_scomplex(z)
-    ! Generate a random single precision complex within the unit circle
+    ! Generate a random single precision complex within the unit circle.
     complex, intent(out) :: z
 
     real                   :: r, theta
@@ -61,7 +81,7 @@ module module_random
   end subroutine random_scomplex_rank2
 
   subroutine random_dcomplex(z)
-    ! Generate a random double precision complex within the unit circle
+    ! Generate a random double precision complex within the unit circle.
     complex(8), intent(out) :: z
 
     real(8)                   :: r, theta
@@ -104,7 +124,7 @@ module module_random
   end subroutine random_dcomplex_rank2
 
   subroutine random_character(character_array, output)
-    ! Get a random character of an array of characters
+    ! Randomly select and return a character from an input array of strings.
     character(len=*), intent(in)    :: character_array(:)
     character(len=*), intent(out) :: output
 
@@ -115,7 +135,7 @@ module module_random
   end subroutine random_character
 
   subroutine random_integer(lower_bound, upper_bound, output)
-    ! Get a random integer between the lowerBound and the upperBound included
+    ! Get a random integer between the lowerBound and the upperBound included.
     integer, intent(in)    :: lower_bound, upper_bound
     integer, intent(out) :: output
     
