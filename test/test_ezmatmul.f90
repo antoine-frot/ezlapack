@@ -9,7 +9,7 @@ program test_ezmatmul
   implicit none
 
   logical                                 :: test_passed
-  ! Variables that all the random conditions for the final test
+  ! Variables for random conditions for the final test
   character(len=1)                        :: transa, transb
   integer                                 :: m, n, k
 
