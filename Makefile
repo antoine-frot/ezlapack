@@ -25,6 +25,7 @@ TEST_FILES = $(wildcard $(TEST_DIR)/test*.f90)
 
 # MAIN PROGRAM
 all: $(EXEC)
+	$(EXEC)
 
 $(EXEC): $(MAIN_FILE) | $(BIN_DIR)
 	$(FC) $(FLAGS) -I$(PATH_MOD) -o $@ $< $(LIB) 
