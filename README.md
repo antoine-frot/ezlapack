@@ -162,6 +162,36 @@ subroutine ezmatmul(
 
 ---
 
+## Additional Feature: Random Library
+
+Fortran’s built-in `random_number` function is limited to generating random real numbers. To extend this functionality, additional subroutines have been created, particularly for testing purposes. These subroutines are included in the library and are outlined below.
+
+### `random_complex`
+
+```fortran
+random_complex(output_complex)
+```
+
+Generate random complex numbers (single or double precision) within the unit circle. Supports scalars and arrays up to rank-2.
+
+### `random_integer`
+
+```fortran
+random_integer(low, high, output_integer)
+```
+
+Generate a random integer between 'low' and 'high', inclusive.
+
+### `random_complex`
+
+```fortran
+random_character(character_array, output_character)
+```
+
+Randomly select and return a character from an input array of strings.
+
+---
+
 ## Running Tests
 
 To verify your EzLAPACK installation, navigate to the EzLAPACK directory and run:
