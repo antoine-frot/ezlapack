@@ -55,6 +55,7 @@ test: $(EXEC_TEST)
 		echo "Running $$exec..."; \
 		$(BIN_DIR)/$$exec; \
 		sleep 1; \
+		echo ""; \
 	done
 
 $(BIN_DIR)/%: $(TEST_DIR)/%.f90 | $(BIN_DIR)
