@@ -39,9 +39,9 @@ module module_random
 
   subroutine random_scomplex(z)
     ! Generate a random single precision complex within the unit circle.
-    complex, intent(out) :: z
+    complex(4), intent(out) :: z
 
-    real                   :: r, theta
+    real(4)                 :: r, theta
 
     call random_number(r)
     r = sqrt(r)
@@ -55,9 +55,9 @@ module module_random
   subroutine random_scomplex_rank1(z)
     ! Generate random single-precision complex numbers within the unit circle
     ! for a rank-1 array.
-    complex(kind=4), intent(out) :: z(:)
+    complex(4), intent(out) :: z(:)
 
-    integer :: i
+    integer                 :: i
 
     do i = 1, size(z)
       call random_scomplex(z(i))
@@ -68,12 +68,12 @@ module module_random
   subroutine random_scomplex_rank2(z)
     ! Generate random single-precision complex numbers within the unit circle
     ! for a rank-2 array.
-    complex(kind=4), intent(out) :: z(:,:)
+    complex(4), intent(out) :: z(:,:)
 
-    integer :: i, j
+    integer                 :: i, j
 
-    do i = 1, size(z, dim=1)
-      do j = 1, size(z, dim=2)
+    do j = 1, size(z, dim=2)
+      do i = 1, size(z, dim=1)
         call random_scomplex(z(i, j))
       end do
     end do
@@ -84,7 +84,7 @@ module module_random
     ! Generate a random double precision complex within the unit circle.
     complex(8), intent(out) :: z
 
-    real(8)                   :: r, theta
+    real(8)                 :: r, theta
 
     call random_number(r)
     r = sqrt(r)
@@ -98,9 +98,9 @@ module module_random
   subroutine random_dcomplex_rank1(z)
     ! Generate random double-precision complex numbers within the unit circle
     ! for a rank-1 array.
-    complex(kind=8), intent(out) :: z(:)
+    complex(8), intent(out) :: z(:)
 
-    integer :: i
+    integer                 :: i
 
     do i = 1, size(z)
       call random_dcomplex(z(i))
@@ -113,10 +113,10 @@ module module_random
     ! for a rank-2 array.
     complex(kind=8), intent(out) :: z(:,:)
 
-    integer :: i, j
+    integer                      :: i, j
 
-    do i = 1, size(z, dim=1)
-      do j = 1, size(z, dim=2)
+    do j = 1, size(z, dim=2)
+      do i = 1, size(z, dim=1)
         call random_dcomplex(z(i, j))
       end do
     end do
@@ -125,10 +125,10 @@ module module_random
 
   subroutine random_character(character_array, output)
     ! Randomly select and return a character from an input array of strings.
-    character(len=*), intent(in)    :: character_array(:)
+    character(len=*), intent(in)  :: character_array(:)
     character(len=*), intent(out) :: output
 
-    integer                         :: random_int
+    integer                       :: random_int
 
     call random_integer(1, size(character_array), random_int)
     output = character_array(random_int)
@@ -137,7 +137,7 @@ module module_random
   subroutine random_integer(lower_bound, upper_bound, output)
     ! Get a random integer between the lowerBound and the upperBound included.
     integer, intent(in)    :: lower_bound, upper_bound
-    integer, intent(out) :: output
+    integer, intent(out)   :: output
     
     real                   :: rand
 
