@@ -7,12 +7,12 @@ program test_random
   implicit none
 
   ! Variables for testing random complex numbers, integers, and characters
-  complex(4), dimension(5) :: z_scomplex_vector
-  complex(4), dimension(3,2) :: z_scomplex_matrix
-  complex(8), dimension(6) :: z_dcomplex_vector
-  complex(8), dimension(2,3) :: z_dcomplex_matrix
-  integer    :: int_output, i, j
-  character(len=5) :: char_output
+  complex(4), dimension(2)       :: z_scomplex_vector
+  complex(4), dimension(3,2)     :: z_scomplex_matrix
+  complex(8), dimension(4)       :: z_dcomplex_vector
+  complex(8), dimension(2,3)     :: z_dcomplex_matrix
+  integer                        :: int_output, i, j
+  character(len=5)               :: char_output
   character(len=5), dimension(3) :: char_array = ['Alice', 'Betty', 'Catty']
 
   ! Test random single-precision complex number
@@ -29,7 +29,7 @@ program test_random
   ! Test random single-precision complex rank-1 array
   call random_complex(z_scomplex_vector)
   print *, 'Random single-precision complex rank-1 array:'
-  do i = 1, 5
+  do i = 1, 2
     write(*, "(A, I1, A, A, F12.6, A, F12.6)") &
     '(', i, ') ', 'Real: ', real(z_scomplex_vector(i)), ' Imaginary: ', aimag(z_scomplex_vector(i))
   end do
@@ -38,7 +38,7 @@ program test_random
   ! Test random double-precision complex rank-1 array
   call random_complex(z_dcomplex_vector)
   print *, 'Random double-precision complex rank-1 array:'
-  do i = 1, 5
+  do i = 1, 4
     write(*, "(A, I1, A, A, F18.15, A, F18.15)") &
     '(', i, ') ', 'Real: ', real(z_dcomplex_vector(i)), ' Imaginary: ', aimag(z_dcomplex_vector(i))
   end do
@@ -67,9 +67,8 @@ program test_random
   print *, '--------------------------------------'
 
   ! Test random integer generation
-  print *, 'Testing random integer between 1 and 100:'
   call random_integer(1, 100, int_output)
-  write(*, "(A, I3)") 'Random integer: ', int_output
+  write(*, "(A, I3)") 'Random integer between 1 and 100: ', int_output
   print *, '--------------------------------------'
 
   ! Test random character selection
