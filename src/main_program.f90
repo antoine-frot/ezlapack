@@ -1,48 +1,75 @@
-
 program test_matrice_mult_d
 
   use ezlapack, only: ezmatmul
 
   implicit none
 
-  integer          :: N, i
-  double precision :: t_start, t_end
-  integer          :: size_mat(4)
-  double precision :: alpha, beta
-  double precision, allocatable, dimension(:,:) :: A, B, C
+  integer                              :: N, i
+  real(8)                              :: t_cpu_start_matmul, t_cpu_end_matmul
+  real(8)                              :: t_cpu_start_dgemm, t_cpu_end_dgemm
+  real(8)                              :: t_cpu_start_ezmatmul, t_cpu_end_ezmatmul
+  real(8)                              :: t_wall_start, t_wall_end
+  integer                              :: start_count, end_count, count_rate
+  integer                              :: size_mat(6)
+  real(8), allocatable, dimension(:,:) :: A, B, C
 
-  size_mat = (/ 10, 100, 1000, 2000/)
+  size_mat = (/ 10, 100, 1000, 2000, 5000, 10000/)
+
+  call SYSTEM_CLOCK(count_rate = count_rate)
 
   do i = 1, size(size_mat)
+
+    print *, ''
+
     N = size_mat(i)
-
+    write(*,'(A,I5)') 'For N = ', N
     allocate(A(N, N), B(N, N), C(N, N))
-
     call random_number(A)
     call random_number(B)
 
-    alpha = 1d0
-    beta = 0d0
-
     ! Matmul section
-    call cpu_time(t_start)
-    C = matmul(A, B)
-    call cpu_time(t_end)
-    write(*,'(A30,E12.6,A10,I9)') 'CPU time for matmul ', t_end - t_start, ' s for N = ', N
+    if (N < 10000) then ! Too slow
+      call cpu_time(t_cpu_start_matmul)
+      call SYSTEM_CLOCK(start_count)
+      C = matmul(A, B)
+      call SYSTEM_CLOCK(end_count)
+      call cpu_time(t_cpu_end_matmul)
+      t_wall_start = real(start_count) / real(count_rate)
+      t_wall_end   = real(end_count) / real(count_rate)
+      write(*,'(A,E12.6,A)') 'Wall time for matmul   ', t_wall_end - t_wall_start, ' seconds'
+    end if
 
     ! DGEMM section
-    call cpu_time(t_start)
-    call dgemm('N', 'N', N, N, N, alpha, A, N, B, N, beta, C, N)
-    call cpu_time(t_end)
-    write(*,'(A30,E12.6,A10,I9)') 'CPU time for dgemm ', t_end - t_start, ' s for N = ', N
+    call cpu_time(t_cpu_start_dgemm)
+    call SYSTEM_CLOCK(start_count)
+    call dgemm('N', 'N', N, N, N, 1d0, A, N, B, N, 0d0, C, N)
+    call SYSTEM_CLOCK(end_count)
+    call cpu_time(t_cpu_end_dgemm)
+    t_wall_start = real(start_count) / real(count_rate)
+    t_wall_end   = real(end_count) / real(count_rate)
+    write(*,'(A,E12.6,A)') 'Wall time for dgemm    ', t_wall_end - t_wall_start, ' seconds'
 
-    ! Wrapper section
-    call cpu_time(t_start)
+    ! Ezmatmul section
+    call cpu_time(t_cpu_start_ezmatmul)
+    call SYSTEM_CLOCK(start_count)
     call ezmatmul(A, B, C)
-    call cpu_time(t_end)
-    write(*,'(A30,E12.6,A10,I9)') 'CPU time for wrapper ', t_end - t_start, ' s for N = ', N
+    call SYSTEM_CLOCK(end_count)
+    call cpu_time(t_cpu_end_ezmatmul)
+    t_wall_start = real(start_count) / real(count_rate)
+    t_wall_end   = real(end_count) / real(count_rate)
+    write(*,'(A,E12.6,A)') 'Wall time for ezmatmul ', t_wall_end - t_wall_start, ' seconds'
+
+    ! Print all CPU times after wall times
+    print *, ''
+    if (N < 10000) then ! Too slow
+      write(*,'(A,E12.6,A)') 'CPU time for matmul    ', t_cpu_end_matmul   - t_cpu_start_matmul, ' seconds'
+    end if
+    write(*,'(A,E12.6,A)') 'CPU time for dgemm     ', t_cpu_end_dgemm    - t_cpu_start_dgemm, ' seconds'
+    write(*,'(A,E12.6,A)') 'CPU time for ezmatmul  ', t_cpu_end_ezmatmul - t_cpu_start_ezmatmul, ' seconds'
 
     deallocate(A, B, C)
+
   end do
 
 end program test_matrice_mult_d
+
