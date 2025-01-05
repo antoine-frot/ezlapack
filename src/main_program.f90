@@ -1,7 +1,7 @@
 
 program test_matrice_mult_d
 
-  use ezlapack
+  use ezlapack, only: ezmatmul, random_integer, random_complex, random_character
 
   implicit none
 
