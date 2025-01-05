@@ -160,6 +160,8 @@ module module_ezmatmul
 !------------------------------------!
 
   subroutine ezsgemm(transa, transb, alpha, A, B, beta, C)
+    ! Verify that the dimensions of the matrices are correct,
+    ! and call sgemm with the appropriate arguments based on transa and transb.
 
     character(len=1), intent(in)                       :: transa, transb
     real(4), intent(in)                                :: alpha, beta
@@ -225,12 +227,16 @@ module module_ezmatmul
 !----------------------------!
 
   subroutine ezdgemm_trans_alpha_beta(A, B, C)
+    ! Calls the DGEMM routines with default values for 
+    ! transa, transb, alpha and beta ('N', 'N', 1d0 and 0d0, respectively).
     real(8), dimension(:,:), contiguous, intent(in)    :: A, B
     real(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezdgemm('N', 'N', 1d0, A, B, 0d0, C)
   end subroutine ezdgemm_trans_alpha_beta
 
   subroutine ezdgemm_alpha_beta(transa, transb, A, B, C)
+    ! Calls the DGEMM routines with default values for 
+    ! alpha and beta (1d0 and 0d0, respectively).
     real(8), dimension(:,:), contiguous, intent(in)    :: A, B
     real(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
@@ -238,6 +244,8 @@ module module_ezmatmul
   end subroutine ezdgemm_alpha_beta
 
   subroutine ezdgemm_trans_beta(alpha, A, B, C)
+    ! Calls the DGEMM routines with default values for 
+    ! transa, transb and beta ('N', 'N' and 0d0, respectively).
     real(8), intent(in)                                :: alpha
     real(8), dimension(:,:), contiguous, intent(in)    :: A, B
     real(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -245,6 +253,8 @@ module module_ezmatmul
   end subroutine ezdgemm_trans_beta
 
   subroutine ezdgemm_trans_alpha(A, B, beta, C)
+    ! Calls the DGEMM routines with default values for 
+    ! transa, transb and alpha  ('N', 'N' and 1d0, respectively).
     real(8), intent(in)                                :: beta
     real(8), dimension(:,:), contiguous, intent(in)    :: A, B
     real(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -252,6 +262,8 @@ module module_ezmatmul
   end subroutine ezdgemm_trans_alpha
 
   subroutine ezdgemm_alpha(transa, transb, A, B, beta, C)
+    ! Calls the DGEMM routines with default values for 
+    ! alpha (1d0).
     real(8), intent(in)                                :: beta
     real(8), dimension(:,:), contiguous, intent(in)    :: A, B
     real(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -260,6 +272,8 @@ module module_ezmatmul
   end subroutine ezdgemm_alpha
 
   subroutine ezdgemm_beta(transa, transb, alpha, A, B, C)
+    ! Calls the DGEMM routines with default values for 
+    ! beta (0d0).
     real(8), intent(in)                                :: alpha
     real(8), dimension(:,:), contiguous, intent(in)    :: A, B
     real(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -268,6 +282,8 @@ module module_ezmatmul
   end subroutine ezdgemm_beta
 
   subroutine ezdgemm_trans(alpha, A, B, beta, C)
+    ! Calls the DGEMM routines with default values for 
+    ! transa and transb ('N' and 'N', respectively).
     real(8), intent(in)                                :: alpha, beta
     real(8), dimension(:,:), contiguous, intent(in)    :: A, B
     real(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -279,6 +295,8 @@ module module_ezmatmul
 !------------------------------------!
 
   subroutine ezdgemm(transa, transb, alpha, A, B, beta, C)
+    ! Verify that the dimensions of the matrices are correct,
+    ! and call dgemm with the appropriate arguments based on transa and transb.
 
     character(len=1), intent(in)                       :: transa, transb
     real(8), intent(in)                                :: alpha, beta
@@ -343,12 +361,16 @@ module module_ezmatmul
 !----------------------------!
 
   subroutine ezcgemm_trans_alpha_beta(A, B, C)
+    ! Calls the CGEMM routines with default values for 
+    ! transa, transb, alpha and beta ('N', 'N', (1e0,0e0) and (0e0,0e0), respectively).
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
     call ezcgemm('N', 'N', (1e0,0e0), A, B, (0e0,0e0), C)
   end subroutine ezcgemm_trans_alpha_beta
 
   subroutine ezcgemm_alpha_beta(transa, transb, A, B, C)
+    ! Calls the CGEMM routines with default values for 
+    ! alpha and beta ((1e0,0e0) and (0e0,0e0), respectively).
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                       :: transa, transb
@@ -356,6 +378,8 @@ module module_ezmatmul
   end subroutine ezcgemm_alpha_beta
 
   subroutine ezcgemm_trans_beta(alpha, A, B, C)
+    ! Calls the CGEMM routines with default values for 
+    ! transa, transb and beta ('N', 'N' and (0e0,0e0), respectively).
     complex(4), intent(in)                                :: alpha
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
@@ -363,6 +387,8 @@ module module_ezmatmul
   end subroutine ezcgemm_trans_beta
 
   subroutine ezcgemm_trans_alpha(A, B, beta, C)
+    ! Calls the CGEMM routines with default values for 
+    ! transa, transb and alpha ('N', 'N' and (1e0,0e0), respectively).
     complex(4), intent(in)                                :: beta
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
@@ -370,6 +396,8 @@ module module_ezmatmul
   end subroutine ezcgemm_trans_alpha
 
   subroutine ezcgemm_alpha(transa, transb, A, B, beta, C)
+    ! Calls the CGEMM routines with default values for 
+    ! alpha ((1e0,0e0)).
     complex(4), intent(in)                                :: beta
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
@@ -378,6 +406,8 @@ module module_ezmatmul
   end subroutine ezcgemm_alpha
 
   subroutine ezcgemm_beta(transa, transb, alpha, A, B, C)
+    ! Calls the CGEMM routines with default values for 
+    ! beta ((0e0,0e0)).
     complex(4), intent(in)                                :: alpha
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
@@ -386,6 +416,8 @@ module module_ezmatmul
   end subroutine ezcgemm_beta
 
   subroutine ezcgemm_trans(alpha, A, B, beta, C)
+    ! Calls the CGEMM routines with default values for 
+    ! transa and transb ('N' and 'N', respectively).
     complex(4), intent(in)                                :: alpha, beta
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
@@ -397,6 +429,8 @@ module module_ezmatmul
 !------------------------------------!
 
   subroutine ezcgemm(transa, transb, alpha, A, B, beta, C)
+    ! Verify that the dimensions of the matrices are correct,
+    ! and call cgemm with the appropriate arguments based on transa and transb.
 
     character(len=1), intent(in)                          :: transa, transb
     complex(4), intent(in)                                :: alpha, beta
@@ -454,12 +488,16 @@ module module_ezmatmul
 !----------------------------!
 
   subroutine ezzgemm_trans_alpha_beta(A, B, C)
+    ! Calls the ZGEMM routines with default values for 
+    ! transa, transb, alpha and beta ('N', 'N', (1d0,0d0) and (0d0,0d0), respectively).
     complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(8), dimension(:,:), contiguous, intent(inout) :: C
     call ezzgemm('N', 'N', (1d0,0d0), A, B, (0d0,0d0), C)
   end subroutine ezzgemm_trans_alpha_beta
 
   subroutine ezzgemm_alpha_beta(transa, transb, A, B, C)
+    ! Calls the ZGEMM routines with default values for 
+    ! alpha and beta ((1d0,0d0) and (0d0,0d0), respectively).
     complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(8), dimension(:,:), contiguous, intent(inout) :: C
     character(len=1), intent(in)                          :: transa, transb
@@ -467,6 +505,8 @@ module module_ezmatmul
   end subroutine ezzgemm_alpha_beta
 
   subroutine ezzgemm_trans_beta(alpha, A, B, C)
+    ! Calls the ZGEMM routines with default values for 
+    ! transa, transb and beta ('N', 'N' and (0d0,0d0), respectively).
     complex(8), intent(in)                                :: alpha
     complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -474,6 +514,8 @@ module module_ezmatmul
   end subroutine ezzgemm_trans_beta
 
   subroutine ezzgemm_trans_alpha(A, B, beta, C)
+    ! Calls the ZGEMM routines with default values for 
+    ! transa, transb and alpha ('N', 'N' and (1d0,0d0), respectively).
     complex(8), intent(in)                                :: beta
     complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -481,6 +523,8 @@ module module_ezmatmul
   end subroutine ezzgemm_trans_alpha
 
   subroutine ezzgemm_alpha(transa, transb, A, B, beta, C)
+    ! Calls the ZGEMM routines with default values for 
+    ! alpha ((1d0,0d0)).
     complex(8), intent(in)                                :: beta
     complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -489,6 +533,8 @@ module module_ezmatmul
   end subroutine ezzgemm_alpha
 
   subroutine ezzgemm_beta(transa, transb, alpha, A, B, C)
+    ! Calls the ZGEMM routines with default values for 
+    ! beta ((0d0,0d0)).
     complex(8), intent(in)                                :: alpha
     complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -497,6 +543,8 @@ module module_ezmatmul
   end subroutine ezzgemm_beta
 
   subroutine ezzgemm_trans(alpha, A, B, beta, C)
+    ! Calls the ZGEMM routines with default values for 
+    ! transa and transb ('N' and 'N', respectively).
     complex(8), intent(in)                                :: alpha, beta
     complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(8), dimension(:,:), contiguous, intent(inout) :: C
@@ -508,6 +556,8 @@ module module_ezmatmul
 !------------------------------------!
 
   subroutine ezzgemm(transa, transb, alpha, A, B, beta, C)
+    ! Verify that the dimensions of the matrices are correct,
+    ! and call zgemm with the appropriate arguments based on transa and transb.
 
     character(len=1), intent(in)                          :: transa, transb
     complex(8), intent(in)                                :: alpha, beta
