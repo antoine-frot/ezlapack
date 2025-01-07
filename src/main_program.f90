@@ -1,4 +1,7 @@
-program test_matrice_mult_d
+program speed_test_ezmatmul
+
+! Purpose: Compare wall time and CPU time for matrix multiplication using
+! MATMUL, DGEMM, and EZMATMUL across different matrix sizes.
 
   use ezlapack, only: ezmatmul
 
@@ -22,7 +25,7 @@ program test_matrice_mult_d
     print *, ''
 
     N = size_mat(i)
-    write(*,'(A,I5)') 'For N = ', N
+    write(*,'(A,I0,A,I0)') 'Size of the matrices is ', N, ' * ', N
     allocate(A(N, N), B(N, N), C(N, N))
     call random_number(A)
     call random_number(B)
@@ -37,6 +40,8 @@ program test_matrice_mult_d
       t_wall_start = real(start_count) / real(count_rate)
       t_wall_end   = real(end_count) / real(count_rate)
       write(*,'(A,E12.6,A)') 'Wall time for matmul   ', t_wall_end - t_wall_start, ' seconds'
+    else
+      write(*,'(A)') 'Matmul is too slow for this size of matrices'
     end if
 
     ! DGEMM section
@@ -63,6 +68,8 @@ program test_matrice_mult_d
     print *, ''
     if (N < 10000) then ! Too slow
       write(*,'(A,E12.6,A)') 'CPU time for matmul    ', t_cpu_end_matmul   - t_cpu_start_matmul, ' seconds'
+    else
+      write(*,'(A)') 'Matmul is too slow for this size of matrices'
     end if
     write(*,'(A,E12.6,A)') 'CPU time for dgemm     ', t_cpu_end_dgemm    - t_cpu_start_dgemm, ' seconds'
     write(*,'(A,E12.6,A)') 'CPU time for ezmatmul  ', t_cpu_end_ezmatmul - t_cpu_start_ezmatmul, ' seconds'
@@ -71,5 +78,5 @@ program test_matrice_mult_d
 
   end do
 
-end program test_matrice_mult_d
+end program speed_test_ezmatmul
 
