@@ -223,7 +223,7 @@ Subroutine names are designed to closely align with the names of intrinsic Fortr
 while variable names adhere to the LAPACK names.
 The documentation adheres to the nomenclature conventions of Doxygen.
 
-## Contatct
+## Contact
 
 For questions, suggestions, or feedback, please contact:
 - Email: [Antoine Frot](mailto:antoine.frot@orange.fr)
