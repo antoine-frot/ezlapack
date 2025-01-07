@@ -373,7 +373,7 @@ module module_ezmatmul
     ! alpha and beta ((1e0,0e0) and (0e0,0e0), respectively).
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                       :: transa, transb
+    character(len=1), intent(in)                          :: transa, transb
     call ezcgemm(transA, transB, (1e0,0e0), A, B, (0e0,0e0), C)
   end subroutine ezcgemm_alpha_beta
 
@@ -401,7 +401,7 @@ module module_ezmatmul
     complex(4), intent(in)                                :: beta
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                       :: transa, transb
+    character(len=1), intent(in)                          :: transa, transb
     call ezcgemm(transA, transB, (1e0,0e0), A, B, beta, C)
   end subroutine ezcgemm_alpha
 
@@ -411,7 +411,7 @@ module module_ezmatmul
     complex(4), intent(in)                                :: alpha
     complex(4), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(4), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                       :: transa, transb
+    character(len=1), intent(in)                          :: transa, transb
     call ezcgemm(transA, transB, alpha, A, B, (0e0,0e0), C)
   end subroutine ezcgemm_beta
 
@@ -538,7 +538,7 @@ module module_ezmatmul
     complex(8), intent(in)                                :: alpha
     complex(8), dimension(:,:), contiguous, intent(in)    :: A, B
     complex(8), dimension(:,:), contiguous, intent(inout) :: C
-    character(len=1), intent(in)                       :: transa, transb
+    character(len=1), intent(in)                          :: transa, transb
     call ezzgemm(transA, transB, alpha, A, B, (0d0,0d0), C)
   end subroutine ezzgemm_beta
 
