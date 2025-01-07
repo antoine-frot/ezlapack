@@ -4,7 +4,7 @@ FLAGS = -O3 -g -Wall
 LIB = -lezlapack -lblas -llapack
 LIB_NAME = ezlapack
 PATH_LIBRARY_LINUX = /usr/local/lib
-PATH_LIBRARY_MAC = /usr/lib
+PATH_LIBRARY_MACOS = /usr/lib
 PATH_MOD = /usr/local/include
 
 # Directories
