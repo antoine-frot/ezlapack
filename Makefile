@@ -16,10 +16,10 @@ MOD_DIR = module
 # MAIN PROGRAM
 EXEC = $(BIN_DIR)/main_program
 MAIN_FILE = $(SRC_DIR)/main_program.f90
-#INSTALLATION
+# INSTALLATION
 MOD_FILES = $(wildcard $(MOD_DIR)/module_*.f90)
 MOD_OBJ_FILES = $(MOD_FILES:$(MOD_DIR)/%.f90=$(BIN_DIR)/%.o)
-#TESTS
+# TESTS
 EXEC_TEST = $(TEST_FILES:$(TEST_DIR)/%.f90=$(BIN_DIR)/%)
 TEST_FILES = $(wildcard $(TEST_DIR)/test*.f90)
 
@@ -33,10 +33,28 @@ $(EXEC): $(MAIN_FILE) | $(BIN_DIR)
 # INSTALLATION
 install: $(BIN_DIR)/lib$(LIB_NAME).a
 	@echo "Installing library..."
+	@echo "Operating System: $(shell uname)"  # Add debugging output for uname
+ifeq ($(shell uname), Linux)
+	@echo "Detected Linux OS"
+	@$(MAKE) install_linux
+else ifeq ($(shell uname), Darwin)
+	@echo "Detected macOS"
+	@$(MAKE) install_mac
+else
+	$(error Unsupported OS)
+endif
+
+install_linux:
 	sudo mkdir -p $(PATH_LIBRARY) $(PATH_MOD)
 	sudo cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)
 	sudo cp $(BIN_DIR)/*.mod $(PATH_MOD)
 	sudo ldconfig
+
+install_mac:
+	sudo mkdir -p $(PATH_LIBRARY) $(PATH_MOD)
+	sudo cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)
+	sudo cp $(BIN_DIR)/*.mod $(PATH_MOD)
+	sudo ranlib $(PATH_LIBRARY)/lib$(LIB_NAME).a
 
 $(BIN_DIR)/lib$(LIB_NAME).a: $(BIN_DIR)/$(LIB_NAME).o $(MOD_OBJ_FILES)
 	@echo "Archiving library..."
@@ -60,7 +78,6 @@ test: $(EXEC_TEST)
 
 $(BIN_DIR)/%: $(TEST_DIR)/%.f90 | $(BIN_DIR)
 	$(FC) $(FLAGS) -I$(PATH_MOD) -o $@ $< $(LIB)
-
 
 # Create binary directory if it doesn't exist
 $(BIN_DIR):
