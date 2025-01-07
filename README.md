@@ -217,7 +217,11 @@ We recommend replicating this setup for best results.
 
 ## Coding Convention
 
-The code follows the coding conventions outlined in the [Fortran-lang Style Guide](https://fortran-lang.org/en/learn/best_practices/style_guide/). Subroutine names are designed to closely align with the names of intrinsic Fortran subroutines, while variable names adhere to the LAPACK names.
+The code follows the coding conventions outlined in the 
+[Fortran-lang Style Guide](https://fortran-lang.org/en/learn/best_practices/style_guide/).
+Subroutine names are designed to closely align with the names of intrinsic Fortran subroutines, 
+while variable names adhere to the LAPACK names.
+The documentation adheres to the nomenclature conventions of Doxygen.
 
 ## Contatct
 
