@@ -3,7 +3,8 @@ FC = gfortran
 FLAGS = -O3 -g -Wall
 LIB = -lezlapack -lblas -llapack
 LIB_NAME = ezlapack
-PATH_LIBRARY = /usr/local/lib
+PATH_LIBRARY_LINUX = /usr/local/lib
+PATH_LIBRARY_MAC = /usr/lib
 PATH_MOD = /usr/local/include
 
 # Directories
@@ -45,14 +46,14 @@ else
 endif
 
 install_linux:
-	sudo mkdir -p $(PATH_LIBRARY) $(PATH_MOD)
-	sudo cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)
+	sudo mkdir -p $(PATH_LIBRARY_LINUX) $(PATH_MOD)
+	sudo cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY_LINUX)
 	sudo cp $(BIN_DIR)/*.mod $(PATH_MOD)
 	sudo ldconfig
 
 install_mac:
-	sudo mkdir -p $(PATH_LIBRARY) $(PATH_MOD)
-	sudo cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY)
+	sudo mkdir -p $(PATH_LIBRARY_MACOS) $(PATH_MOD)
+	sudo cp $(BIN_DIR)/lib$(LIB_NAME).a $(PATH_LIBRARY_MACOS)
 	sudo cp $(BIN_DIR)/*.mod $(PATH_MOD)
 	sudo ranlib $(PATH_LIBRARY)/lib$(LIB_NAME).a
 
