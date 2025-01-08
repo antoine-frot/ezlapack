@@ -85,7 +85,7 @@ $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
 clean:
-	sudo rm -rf $(BIN_DIR)
+	rm -rf $(BIN_DIR)
 
 .PHONY: all clean test install
 
