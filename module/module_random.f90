@@ -1,7 +1,6 @@
-!> \file
-!> \brief Provides a generic interface for generating random complex numbers, integers, and characters.
+!> @brief Provides a generic interface for generating random complex numbers, integers, and characters.
 !> 
-!> \details
+!> @details
 !> This module offers utilities for generating random values with specific properties:
 !> - Random complex numbers within the unit circle.
 !> - Random integers within a user-specified range.
