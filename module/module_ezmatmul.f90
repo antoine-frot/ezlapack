@@ -1,3 +1,26 @@
+!> @brief Wrapper for the BLAS ( part of LAPACK) `*gemm` routines that perform matrix-matrix multiplication.
+!! These subroutines compute the operation:
+!! `C = alpha * op(A) * op(B) + beta * C`
+!! where `op(A)` and `op(B)` can be the transpose or the original matrices `A` and `B`.
+!! It validates the dimensions of the input matrices and provides default values for
+!! the scaling factors `alpha` and `beta`, as well as the transformation indicators
+!! `transa` and `transb`, if they are not supplied.
+!! @param[in] transa (Optional, default = 'N') Specifies the operation applied to matrix A:
+!!                    - 'N': No transpose
+!!                    - 'T': Transpose
+!!                    - 'C': Conjugate transpose
+!! @param[in] transb (Optional, default = 'N') Specifies the operation applied to matrix B:
+!!                    - 'N': No transpose
+!!                    - 'T': Transpose
+!!                    - 'C': Conjugate transpose
+!! @param[in] alpha  (Optional, default = 1) Scalar multiplier for `op(A) * op(B)`.
+!! @param[in] beta   (Optional, default = 0) Scalar multiplier for `C`.
+!! @param[in] A      Input matrix A with dimensions matching the specified operation.
+!! @param[in] B      Input matrix B with dimensions matching the specified operation.
+!! @param[in,out] C  Matrix C. On input, the initial values of C. On output, the result of
+!!                   the matrix multiplication.
+!! @note If matrix dimensions are incompatible, an error message is printed, and the
+!!       computation is skipped.
 module module_ezmatmul
 !--------------------------------------------------------------------------------
 ! Purpose:                                                                      
