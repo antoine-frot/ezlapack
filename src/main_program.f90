@@ -1,5 +1,4 @@
 program speed_test_ezmatmul
-
 ! Purpose: Compare wall time and CPU time for matrix multiplication using
 ! MATMUL, DGEMM, and EZMATMUL across different matrix sizes.
 
