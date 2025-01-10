@@ -197,6 +197,22 @@ Randomly select and return a character from an input array of strings.
 
 ---
 
+## Speed Test
+
+The LAPACK library is known for its speed, but performance can vary across different computers. 
+A speed test script has been created to measure LAPACK's execution time and compare it with the intrinsic `matmul` function and the `EzLAPACK` wrapper.
+
+Both wall time and CPU time are provided. 
+CPU time may be larger due to LAPACK's parallelization optimizations, while wall time should be minimized.
+
+To run the speed test, use the following command:
+
+```bash
+make run
+```
+
+---
+
 ## Running Tests
 
 To verify your EzLAPACK installation, navigate to the EzLAPACK directory and run:
@@ -206,6 +222,8 @@ make test
 ```
 
 This will compile and execute test cases to ensure everything works as expected.
+
+---
 
 ## Dependencies
 
@@ -220,6 +238,8 @@ This project relies on the following tools and libraries:
 
 We recommend replicating this setup for best results.
 
+---
+
 ## Coding Convention
 
 The code follows the coding conventions outlined in the 
@@ -227,6 +247,8 @@ The code follows the coding conventions outlined in the
 Subroutine names are designed to closely align with the names of intrinsic Fortran subroutines, 
 while variable names adhere to the LAPACK names.
 The documentation adheres to the nomenclature conventions of Doxygen.
+
+---
 
 ## Contact
 
