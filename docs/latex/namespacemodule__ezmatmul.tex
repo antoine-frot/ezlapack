@@ -1,0 +1,47 @@
+\doxysection{module\+\_\+ezmatmul Module Reference}
+\hypertarget{namespacemodule__ezmatmul}{}\label{namespacemodule__ezmatmul}\index{module\_ezmatmul@{module\_ezmatmul}}
+
+
+Wrapper for the BLAS ( part of LAPACK) {\ttfamily \texorpdfstring{$\ast$}{*}gemm} routines that perform matrix-\/matrix multiplication. These subroutines compute the operation\+: {\ttfamily C = alpha \texorpdfstring{$\ast$}{*} op(\+A) \texorpdfstring{$\ast$}{*} op(\+B) + beta \texorpdfstring{$\ast$}{*} C} where {\ttfamily op(\+A)} and {\ttfamily op(\+B)} can be the transpose or the original matrices {\ttfamily A} and {\ttfamily B}. It validates the dimensions of the input matrices and provides default values for the scaling factors {\ttfamily alpha} and {\ttfamily beta}, as well as the transformation indicators {\ttfamily transa} and {\ttfamily transb}, if they are not supplied.  
+
+
+\doxysubsubsection*{Data Types}
+\begin{DoxyCompactItemize}
+\item 
+interface \mbox{\hyperlink{interfacemodule__ezmatmul_1_1ezmatmul}{ezmatmul}}
+\begin{DoxyCompactList}\small\item\em Wrapper for the BLAS ( part of LAPACK) {\ttfamily \texorpdfstring{$\ast$}{*}gemm} routines that perform matrix-\/matrix multiplication. These subroutines compute the operation\+: {\ttfamily C = alpha \texorpdfstring{$\ast$}{*} op(\+A) \texorpdfstring{$\ast$}{*} op(\+B) + beta \texorpdfstring{$\ast$}{*} C} where {\ttfamily op(\+A)} and {\ttfamily op(\+B)} can be the transpose or the original matrices {\ttfamily A} and {\ttfamily B}. It validates the dimensions of the input matrices and provides default values for the scaling factors {\ttfamily alpha} and {\ttfamily beta}, as well as the transformation indicators {\ttfamily transa} and {\ttfamily transb}, if they are not supplied. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Wrapper for the BLAS ( part of LAPACK) {\ttfamily \texorpdfstring{$\ast$}{*}gemm} routines that perform matrix-\/matrix multiplication. These subroutines compute the operation\+: {\ttfamily C = alpha \texorpdfstring{$\ast$}{*} op(\+A) \texorpdfstring{$\ast$}{*} op(\+B) + beta \texorpdfstring{$\ast$}{*} C} where {\ttfamily op(\+A)} and {\ttfamily op(\+B)} can be the transpose or the original matrices {\ttfamily A} and {\ttfamily B}. It validates the dimensions of the input matrices and provides default values for the scaling factors {\ttfamily alpha} and {\ttfamily beta}, as well as the transformation indicators {\ttfamily transa} and {\ttfamily transb}, if they are not supplied. 
+
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em transa} & (Optional, default = \textquotesingle{}N\textquotesingle{}) Specifies the operation applied to matrix A\+:
+\begin{DoxyItemize}
+\item \textquotesingle{}N\textquotesingle{}\+: No transpose
+\item \textquotesingle{}T\textquotesingle{}\+: Transpose
+\item \textquotesingle{}C\textquotesingle{}\+: Conjugate transpose 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ in}}  & {\em transb} & (Optional, default = \textquotesingle{}N\textquotesingle{}) Specifies the operation applied to matrix B\+:
+\begin{DoxyItemize}
+\item \textquotesingle{}N\textquotesingle{}\+: No transpose
+\item \textquotesingle{}T\textquotesingle{}\+: Transpose
+\item \textquotesingle{}C\textquotesingle{}\+: Conjugate transpose 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ in}}  & {\em alpha} & (Optional, default = 1) Scalar multiplier for {\ttfamily op(\+A) \texorpdfstring{$\ast$}{*} op(\+B)}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em beta} & (Optional, default = 0) Scalar multiplier for {\ttfamily C}. \\
+\hline
+\mbox{\texttt{ in}}  & {\em A} & Input matrix A with dimensions matching the specified operation. \\
+\hline
+\mbox{\texttt{ in}}  & {\em B} & Input matrix B with dimensions matching the specified operation. \\
+\hline
+\mbox{\texttt{ in,out}}  & {\em C} & Matrix C. On input, the initial values of C. On output, the result of the matrix multiplication. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+If matrix dimensions are incompatible, an error message is printed, and the computation is skipped. 
+\end{DoxyNote}
