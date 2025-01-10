@@ -1,0 +1,23 @@
+# Custom Layout File for Doxygen
+
+# Define the order of sections in the documentation
+members = public, protected, private    # Order of member sections (this doesn't change the main order)
+functions = public, protected, private  # Order of function sections
+
+# Specify the section order
+# The order should include 'brief', 'detailed', and 'functions' in the desired order
+# 'brief' is for the brief description (if any)
+brief = YES
+detailed = YES
+functions = YES
+
+# Set the layout for the class, module, and file documentation pages
+# We want the detailed description to be listed first, followed by functions.
+class_desc = detailed, functions
+module_desc = detailed, functions
+file_desc = detailed, functions
+
+# Optional: You can also control whether diagrams and other details are shown in the top section
+class_diagram = NO  # No class diagram at the top (optional)
+
+
