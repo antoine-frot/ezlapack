@@ -87,7 +87,7 @@ gfortran -o program_name program_name.f90 -I/path/to/mod/files -L/path/to/lib -l
 
 #### Notes:
 - **Local Installation:** `-I` and `-L` flags should point to the `lib` directory.
-- **Global Installation:** Use `-I/usr/local/include` (default) and `-L` flag can be omitted
+- **Global Installation:** Use `-I/usr/local/include` (default), `-L` flag can be omitted
 - **Library Order:** Place `-lezlapack` before `-lblas -llapack`.
 
 The use of `use ezlapack` and the flag `-J` is essential due to the presence of the generic interfaces.
@@ -99,7 +99,7 @@ The use of `use ezlapack` and the flag `-J` is essential due to the presence of 
 ### `ezmatmul`
 
 #### Purpose:
-`ezmatmul` provides a user-friendly generic interface for LAPACK's matrix multiplication routines (`gemm`, such as `sgemm`, `dgemm`, `cgemm`, `zgemm`).
+`ezmatmul` provides a user-friendly generic interface for LAPACK's matrix multiplication routines `*gemm` (i.e. `sgemm`, `dgemm`, `cgemm`, `zgemm`).
 
 It computes:
 
@@ -132,7 +132,7 @@ where:
 
 #### Subroutine Definition:
 
-Type can be either real(4), real(8), complex(4) or complex(8), 
+Type can be either `real(4)`, `real(8)`, `complex(4)` or `complex(8)`, 
 but all arguments should have the same type.
 
 ```fortran
@@ -185,7 +185,7 @@ Generate random complex numbers (single or double precision) within the unit cir
 random_integer(low, high, output_integer)
 ```
 
-Generate a random integer between 'low' and 'high', inclusive.
+Generate a random integer between `low` and `high`, inclusive.
 
 ### `random_complex`
 
