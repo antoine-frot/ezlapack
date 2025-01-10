@@ -43,13 +43,26 @@ brew install gfortran make lapack
     cd ezlapack/
     ```
 
-3. Install EzLAPACK using `make`:
+#### Installing Locally
+
+Install EzLAPACK locally using:
 
     ```bash
     make install
     ```
 
-4. You can now use EzLAPACK in your projects! After installation, the repository directory can be deleted if desired.
+You can now move the directory `lib` in your projects to use it.
+
+#### Installing Globally (Only Available for Linux)
+
+Install EzLAPACK globally using:
+
+    ```bash
+    make install_global
+    ```
+
+By default, the static library is installed in `/usr/local/lib`, and the `.mod` files are placed in `/usr/local/include`. 
+You can customize these installation paths by modifying the `PATH_LIBRARY` and `PATH_MOD` variables in the Makefile to suit your preferences.
 
 ---
 
@@ -66,26 +79,18 @@ program program_name
 end program program_name
 ```
 
-When compiling your program, ensure that the EzLAPACK module is linked properly. For example:
+When compiling your program, ensure that the EzLAPACK module is linked properly by using the following command:
 
 ```bash
-gfortran -I/usr/local/include -o program_name program_name.f90 -lezlapack -lblas -llapack
+gfortran -o program_name program_name.f90 -I/path/to/mod/files -L/path/to/lib -lezlapack -lblas -llapack
 ```
 
 #### Notes:
+- **Local Installation:** `-I` and `-L` flags should point to the `lib` directory.
+- **Global Installation:** Use `-I/usr/local/include` (default) and `-L` flag can be omitted
 - **Library Order:** Place `-lezlapack` before `-lblas -llapack`.
-- **Module Path:** The `-I` flag specifies the directory of the `ezlapack.mod` file. By default, it is `/usr/local/include`. This can be customized in the `Makefile` by modifying the `PATH_MOD` variable before installation.
-```make
-PATH_MOD = /your/custom/path
-```
 
-Then reinstall EzLAPACK using:
-
-```bash
-sudo make install
-```
-
-The use of `use ezlapack` and the flag `-J/usr/local/include` is essential due to the presence of the generic interface.
+The use of `use ezlapack` and the flag `-J` is essential due to the presence of the generic interfaces.
 
 ---
 
