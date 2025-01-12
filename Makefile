@@ -1,6 +1,6 @@
 # Compiler and Flags
 FC = gfortran
-FLAGS = -O3 -g -Wall
+FLAGS = -O3 -g -Wall -Wno-missing-include-dirs
 LIB = -lezlapack -lblas -llapack
 LIB_NAME = ezlapack
 PATH_LIBRARY = /usr/local/lib
@@ -18,8 +18,9 @@ LIB_DIR = lib
 MAIN_FILE = $(SRC_DIR)/speed_test.f90
 EXEC = $(MAIN_FILE:$(SRC_DIR)/%.f90=$(BIN_DIR)/%)
 # INSTALLATION
-MOD_FILES = $(wildcard $(MOD_DIR)/module_*.f90)
+MOD_FILES = $(wildcard $(MOD_DIR)/*.f90)
 MOD_OBJ_FILES = $(MOD_FILES:$(MOD_DIR)/%.f90=$(BIN_DIR)/%.o)
+MOD_MOD_FILES = $(MOD_FILES:$(MOD_DIR)/%.f90=$(LIB_DIR)/%.mod)
 # TESTS
 TEST_FILES = $(wildcard $(TEST_DIR)/test*.f90)
 EXEC_TEST = $(TEST_FILES:$(TEST_DIR)/%.f90=$(BIN_DIR)/%)
@@ -31,7 +32,7 @@ run: $(EXEC)
 	$(EXEC)
 
 $(EXEC): $(MAIN_FILE) | $(BIN_DIR)
-	$(FC) $(FLAGS) -I$(LIB_DIR) -o $@ $< $(LIB) 
+	$(FC) $(FLAGS) -I$(LIB_DIR) -I$(PATH_MOD) -o $@ $< -L$(LIB_DIR) $(LIB) 
 
 # INSTALLATION
 install_global:
@@ -49,10 +50,25 @@ $(LIB_DIR)/lib$(LIB_NAME).a: $(BIN_DIR)/$(LIB_NAME).o $(MOD_OBJ_FILES)
 	ar rcs $@ $^
 
 $(BIN_DIR)/$(LIB_NAME).o: $(MOD_OBJ_FILES)
-	$(FC) $(FLAGS) -J$(LIB_DIR) -o $@ -c $(MOD_DIR)/$(LIB_NAME).f90 $(LIB)
+	$(FC) $(FLAGS) -J$(LIB_DIR) -o $@ -c $(MOD_DIR)/$(LIB_NAME).f90 -L$(LIB_DIR) $(LIB)
 
 $(BIN_DIR)/%.o: $(MOD_DIR)/%.f90 $(LIB_DIR) | $(BIN_DIR)
-	$(FC) $(FLAGS) -I$(LIB_DIR) -J$(LIB_DIR)  -c $< -o $@
+	$(FC) $(FLAGS) -I$(LIB_DIR) -I$(PATH_MOD) -J$(LIB_DIR)  -c $< -o $@
+
+# UNINSTALLATION
+uninstall:
+	@echo "Uninstalling library and module files..."
+	@for modfile in $(MOD_MOD_FILES); do \
+		if [ -f $(PATH_MOD)/$$(basename $$modfile) ]; then \
+			echo "Removing module file: $(PATH_MOD)/$$(basename $$modfile)"; \
+			sudo rm $(PATH_MOD)/$$(basename $$modfile); \
+		fi; \
+	done
+	@if [ -f $(PATH_LIBRARY)/lib$(LIB_NAME).a ]; then \
+		echo "Removing library file: $(PATH_LIBRARY)/lib$(LIB_NAME).a"; \
+		sudo rm $(PATH_LIBRARY)/lib$(LIB_NAME).a; \
+	fi
+	@$(MAKE) --no-print-directory clean
 
 # TESTS
 test: $(EXEC_TEST)
@@ -65,7 +81,7 @@ test: $(EXEC_TEST)
 	done
 
 $(BIN_DIR)/%: $(TEST_DIR)/%.f90 | $(BIN_DIR)
-	$(FC) $(FLAGS) -I$(LIB_MOD) -o $@ $< $(LIB)
+	$(FC) $(FLAGS) -I$(LIB_DIR) -I$(PATH_MOD) -o $@ $< -L$(LIB_DIR) $(LIB)
 
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
@@ -76,9 +92,5 @@ $(LIB_DIR):
 clean:
 	rm -rf $(BIN_DIR) $(LIB_DIR)
 
-debug:
-	@echo "MOD_FILES: $(MOD_FILES)"
-	@echo "MOD_OBJ_FILES: $(MOD_OBJ_FILES)"
-
-.PHONY: all clean test install install_global run
+.PHONY: all clean test install install_global uninstall run
 
