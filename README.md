@@ -64,6 +64,16 @@ Install EzLAPACK globally using:
 By default, the static library is installed in `/usr/local/lib`, and the `.mod` files are placed in `/usr/local/include`. 
 You can customize these installation paths by modifying the `PATH_LIBRARY` and `PATH_MOD` variables in the Makefile to suit your preferences.
 
+### Uninstall EzLAPACK
+
+Uninstall EzLAPACK using:
+
+    ```bash
+    make uninstall
+    ```
+
+After that, there will be no trace of the library remaining.
+
 ---
 
 ## User Guide
