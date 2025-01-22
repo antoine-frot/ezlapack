@@ -210,16 +210,15 @@ Randomly select and return a character from an input array of strings.
 ## Speed Test
 
 The LAPACK library is known for its speed, but performance can vary across different computers. 
-A speed test script has been created to measure LAPACK's execution time and compare it with the intrinsic `matmul` function and the `EzLAPACK` wrapper.
-
-Both wall time and CPU time are provided. 
-CPU time may be larger due to LAPACK's parallelization optimizations, while wall time should be minimized.
+A speed test script has been created to measure LAPACK's execution time and compare it with the intrinsic `matmul` function, the `EzLAPACK` wrapper and `NumPy` from `Python`.
 
 To run the speed test, use the following command:
 
 ```bash
 make run
 ```
+
+As usually observed, NumPy is as fast as EzLAPACK since it is build on LAPACK.
 
 ---
 
@@ -245,6 +244,7 @@ This project relies on the following tools and libraries:
 - Operating System: Ubuntu 22.04 (WSL)
 - Bash: 5.1.16
 - Make: 4.3
+- Python: 3.12.3
 
 We recommend replicating this setup for best results.
 

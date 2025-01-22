@@ -1,5 +1,6 @@
 # Compiler and Flags
 FC = gfortran
+PYTHON = python3
 FLAGS = -O3 -g -Wall -Wno-missing-include-dirs
 LIB = -lezlapack -lblas -llapack
 LIB_NAME = ezlapack
@@ -17,6 +18,7 @@ LIB_DIR = lib
 # MAIN PROGRAM
 MAIN_FILE = $(SRC_DIR)/speed_test.f90
 EXEC = $(MAIN_FILE:$(SRC_DIR)/%.f90=$(BIN_DIR)/%)
+EXEC_PYTHON = $(MAIN_FILE:$(SRC_DIR)/%.f90=$(SRC_DIR)/%.py)
 # INSTALLATION
 MOD_FILES = $(wildcard $(MOD_DIR)/*.f90)
 MOD_OBJ_FILES = $(MOD_FILES:$(MOD_DIR)/%.f90=$(BIN_DIR)/%.o)
@@ -29,7 +31,9 @@ EXEC_TEST = $(TEST_FILES:$(TEST_DIR)/%.f90=$(BIN_DIR)/%)
 all: $(EXEC)
 
 run: $(EXEC)
-	$(EXEC)
+	@echo "Processing... This may take a while (Estimated time: 2 minutes)"
+	$(EXEC) > $(SRC_DIR)/fortran_results.txt
+	$(PYTHON) $(EXEC_PYTHON)
 
 $(EXEC): $(MAIN_FILE) | $(BIN_DIR)
 	$(FC) $(FLAGS) -I$(LIB_DIR) -I$(PATH_MOD) -o $@ $< -L$(LIB_DIR) $(LIB) 
